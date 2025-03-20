@@ -1,0 +1,19 @@
+&& .ant-menu-item-selected {
+	background-color: #0a4d68 !important;
+}
+
+&& .ant-menu-title-content {
+	color: #ffffff !important;
+}
+&& .ant-menu-submenu-arrow {
+	color: #ffffff !important;
+}
+
+&& .ant-menu-item:hover,
+&& .ant-menu-submenu-title:hover {
+	background-color: #0a4d68 !important;
+}
+
+:where(.css-dev-only-do-not-override-1kf000u).ant-menu {
+	padding-right: 7px !important;
+}

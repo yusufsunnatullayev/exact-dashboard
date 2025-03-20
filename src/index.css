@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+	--basic: #0a4d68;
+	--basicBg: #ebeaea;
+}
+
+body {
+	font-family: "Inter", sans-serif !important;
+	background-color: var(--basicBg);
+}
+
+html {
+	background-color: var(--basicBg) !important;
+	font-family: "Inter", sans-serif;
+}
+
+.ant-select-selector {
+	border-radius: 8px !important;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}

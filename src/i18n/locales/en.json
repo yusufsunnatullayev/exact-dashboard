@@ -1,0 +1,6 @@
+{
+	"welcome": "Welcome",
+	"successDone": "Success Done",
+	"understand": "Understand",
+	"wait_message": "Please wait {{time}} seconds to close the window."
+}
