@@ -11,5 +11,5 @@ export interface EmployeeSummaryProps {
 	date: string;
 	resources: Resource[];
 	targetQuantity?: number;
-	proggresStart?: number;
+  proggresStart?: number;
 }

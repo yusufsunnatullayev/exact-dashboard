@@ -4,8 +4,11 @@ import { Progress } from "antd";
 import EmployeeSummaryCard from "../../components/EmployeesCard";
 import { EmployeeSummaryProps } from "../../types/Employees";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useSelector } from "react-redux";
 
 const Employees: React.FC = () => {
+	const stopTimer = useSelector((state: any) => state.main.stopTimer);
+
 	const employees: EmployeeSummaryProps[] = [
 		{
 			employeeName: "David Chen",
@@ -59,7 +62,9 @@ const Employees: React.FC = () => {
 
 	// Handle progress animation and reset
 	useEffect(() => {
-		setCurrentProgress(0); // Reset progress when employee changes
+		if (!stopTimer) return;
+
+		setCurrentProgress(0);
 
 		const interval = setInterval(() => {
 			setCurrentProgress((prev) => {
@@ -72,16 +77,16 @@ const Employees: React.FC = () => {
 		}, 150);
 
 		return () => clearInterval(interval);
-	}, [currentIndex]);
+	}, [currentIndex, stopTimer]);
 
 	useEffect(() => {
+		if (!stopTimer) return;
 		const interval = setInterval(() => {
 			goToSlide((currentIndex + 1) % employees.length);
 		}, 15500);
 		return () => clearInterval(interval);
-	}, [currentIndex]);
+	}, [currentIndex, stopTimer, employees.length]);
 
-	// Navigation handlers
 	const goToPrevious = () => {
 		setCurrentProgress(0);
 
@@ -93,7 +98,6 @@ const Employees: React.FC = () => {
 		setCurrentIndex((prev) => (prev === employees.length - 1 ? 0 : prev + 1));
 	};
 
-	// Handle dot click
 	const goToSlide = (index: number) => {
 		setCurrentIndex(index);
 	};
@@ -117,26 +121,26 @@ const Employees: React.FC = () => {
 
 				<button
 					onClick={goToPrevious}
-					className="absolute left-[-45px] top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+					className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
 				>
 					<ChevronLeft size={24} className="text-gray-600" />
 				</button>
 				<button
 					onClick={goToNext}
-					className="absolute right-[-45px] top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+					className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
 				>
 					<ChevronRight size={24} className="text-gray-600" />
 				</button>
 			</div>
 
-			<div className="mt-10 max-w-4xl mx-auto flex flex-col items-center justify-center  ">
+			<div className="mt-5 max-w-4xl mx-auto flex flex-col items-center justify-center  ">
 				<Progress
 					percent={currentProgress}
 					status={currentProgress >= 100 ? "success" : "active"}
 					strokeColor={"oklch(0.723 0.219 149.579)"}
 					showInfo={false}
 				/>
-				<div className="flex justify-center gap-2 mt-4 cursor-pointer">
+				<div className="flex items-center justify-center gap-2 mt-4 cursor-pointer">
 					{employees.map((_, index) => (
 						<button
 							key={index}

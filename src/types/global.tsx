@@ -23,6 +23,7 @@ export interface AuthState {
 }
 export interface MainState {
 	activeTab: "employees" | "informations";
+	stopTimer: boolean;
 }
 
 export interface Filter {

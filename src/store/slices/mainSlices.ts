@@ -3,6 +3,7 @@ import { MainState } from "../../types/global";
 
 const initialState: MainState = {
 	activeTab: "employees",
+	stopTimer: false,
 };
 
 const mainSlice = createSlice({
@@ -12,8 +13,11 @@ const mainSlice = createSlice({
 		setActiveTab: (state, action) => {
 			state.activeTab = action.payload;
 		},
+		setStopTimer: (state, action) => {
+			state.stopTimer = action.payload;
+		},
 	},
 });
 
-export const { setActiveTab } = mainSlice.actions;
+export const { setActiveTab, setStopTimer } = mainSlice.actions;
 export default mainSlice.reducer;

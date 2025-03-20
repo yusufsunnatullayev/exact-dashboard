@@ -1,25 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExitModal from "../Modal/ExitModal";
 import { Select } from "antd";
 import WhsIcon from "../../assets/icons/Warehouse";
-import { BellRing, LogOut, Timer, Users } from "lucide-react";
-import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
+import { BellRing, LogOut, Pause, Play, Users } from "lucide-react";
+import {
+	setActiveTab as setActiveTabRedux,
+	setStopTimer as setStopTimerRedux,
+} from "../../store/slices/mainSlices";
 import Time from "../Time/index";
 
 const Navbar: React.FC = () => {
 	const exitRef: any = useRef(null);
-	const activeTabRedux = useSelector((state: any) => state.main.activeTab);
+	const { activeTab: activeTabRedux, stopTimer: stopTimerRedux } = useSelector(
+		(state: any) => state.main
+	);
 	const dispatch = useDispatch();
-
-	console.log("Active	Tab: ", activeTabRedux);
 
 	const [activeTab, setActiveTab] = useState<string>(activeTabRedux);
 	const [warehouses, setWarehouses] = useState<string>("ishlab_chiqarish");
+	const [stopTimer, setStopTimer] = useState<boolean>(stopTimerRedux);
 
 	const handleTabChange = (tab: string) => {
 		setActiveTab(tab);
 		dispatch(setActiveTabRedux(tab));
+	};
+
+	const handleStopTimerChange = () => {
+		setStopTimer(!stopTimer);
+		dispatch(setStopTimerRedux(!stopTimer));
 	};
 
 	return (
@@ -66,7 +75,7 @@ const Navbar: React.FC = () => {
 				</div>
 				<div className="flex gap-2 ">
 					<button
-						className={`${activeTab === "employees" ? "bg-blue-600 hover:bg-blue-700" : "bg-white hover:bg-blue-100"} px-5 py-2 rounded-full transition-all duration-200 cursor-pointer`}
+						className={`${activeTab === "employees" ? "bg-blue-600 hover:bg-blue-700" : "bg-white hover:bg-blue-100"} px-5 py-3 rounded-full transition-all duration-200 cursor-pointer`}
 						onClick={() => handleTabChange("employees")}
 					>
 						<span
@@ -77,7 +86,7 @@ const Navbar: React.FC = () => {
 						</span>
 					</button>
 					<button
-						className={`${activeTab === "informations" ? "bg-blue-600 hover:bg-blue-700" : "bg-white hover:bg-blue-100"} px-5 py-2 rounded-full cursor-pointer  transition-all duration-200`}
+						className={`${activeTab === "informations" ? "bg-blue-600 hover:bg-blue-700" : "bg-white hover:bg-blue-100"} px-5 py-3 rounded-full cursor-pointer  transition-all duration-200`}
 						onClick={() => handleTabChange("informations")}
 					>
 						<span
@@ -89,8 +98,14 @@ const Navbar: React.FC = () => {
 					</button>
 				</div>
 
-				<div className="flex gap-10">
+				<div className="flex gap-5">
 					<Time />
+					<div
+						className="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-3 py-2 rounded-3xl text-blue-600"
+						onClick={handleStopTimerChange}
+					>
+						<span>{stopTimer ? <Pause size={20} /> : <Play size={20} />}</span>
+					</div>
 					<button
 						onClick={() => exitRef.current.open()}
 						className="hover:bg-blue-100 px-5 py-2 rounded-full cursor-pointer transition-all duration-200"
