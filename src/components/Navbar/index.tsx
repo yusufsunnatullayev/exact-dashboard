@@ -100,12 +100,12 @@ const Navbar: React.FC = () => {
 
 				<div className="flex gap-5">
 					<Time />
-					{/* <div
+					<div
 						className="flex items-center gap-2 cursor-pointer hover:bg-blue-100 px-3 py-2 rounded-3xl text-blue-600"
 						onClick={handleStopTimerChange}
 					>
 						<span>{stopTimer ? <Pause size={20} /> : <Play size={20} />}</span>
-					</div> */}
+					</div>
 					<button
 						onClick={() => exitRef.current.open()}
 						className="hover:bg-blue-100 px-5 py-2 rounded-full cursor-pointer transition-all duration-200"
