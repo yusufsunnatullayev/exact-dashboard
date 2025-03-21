@@ -42,7 +42,7 @@ const ExitModal: React.FC<ModalProps> = ({ getRef = () => {} }) => {
 			</h2>
 			<div className="flex justify-center items-center gap-10 mt-10">
 				<button
-					className="border border-gray-400  w-[180px] text-sm !h-12 !text-[#1F2937] hover: cursor-pointer rounded-lg"
+					className="border border-blue-400  w-[180px] text-sm !h-12  hover: cursor-pointer rounded-lg"
 					onClick={() => {
 						setIsOpenModal(false);
 						dispatch(logout());
@@ -52,7 +52,7 @@ const ExitModal: React.FC<ModalProps> = ({ getRef = () => {} }) => {
 					Xa
 				</button>
 				<button
-					className="!bg-[#1F2937] w-[180px] text-sm !h-12 !text-white hover:opacity-80 cursor-pointer rounded-lg"
+					className="bg-blue-500 w-[180px] text-sm !h-12 !text-white hover:opacity-80 cursor-pointer rounded-lg"
 					onClick={() => {
 						setIsOpenModal(false);
 					}}

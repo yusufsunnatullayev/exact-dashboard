@@ -1,62 +1,121 @@
 import React from "react";
-import { EmployeeSummaryProps } from "../../types/Employees";
-import { Calendar, Timer, TriangleAlert } from "lucide-react";
+import { Calendar, CircleCheckBig, Info, Timer, TriangleAlert } from "lucide-react";
+import { InformationData, InformationsProps } from "../../types/api/Informations";
 
 // Single Employee Summary Card Component
-const Informar: React.FC<EmployeeSummaryProps> = ({
-	employeeName,
-	role,
-	department,
-	date,
-	resources,
-	targetQuantity = 1500,
-	proggresStart = 0,
-}) => {
-
-		const switchTypeBg = (className:string) => {
-			
+const InformationsCard: React.FC = ({ data }: { data: InformationData }) => {
+	const switchTypeBg = (type: string) => {
+		switch (type) {
+			case "Xavfsizlik ogohlantirishni":
+				return "bg-red-100";
+			case "Eslatma":
+				return "bg-yellow-100";
+			case "Muvaffaqiyat":
+				return "bg-green-100";
+			case "Ma'lumot":
+				return "bg-blue-100";
+			default:
+				return "bg-blue-100";
 		}
+	};
+
+	const switchTypeColor = (type: string) => {
+		switch (type) {
+			case "Xavfsizlik ogohlantirishni":
+				return "text-red-600";
+			case "Eslatma":
+				return "text-yellow-600";
+			case "Muvaffaqiyat":
+				return "text-green-600";
+			case "Ma'lumot":
+				return "text-blue-600";
+			default:
+				return "text-blue-600";
+		}
+	};
+
+	const switchTypeBgText = (type: string) => {
+		switch (type) {
+			case "Xavfsizlik ogohlantirishni":
+				return "bg-red-200";
+			case "Eslatma":
+				return "bg-yellow-200";
+			case "Muvaffaqiyat":
+				return "bg-green-200";
+			case "Ma'lumot":
+				return "bg-blue-200";
+			default:
+				return "bg-blue-200";
+		}
+	};
+	const switchTypeTitle = (type: string) => {
+		switch (type) {
+			case "Xavfsizlik ogohlantirishni":
+				return "text-red-600";
+			case "Eslatma":
+				return "text-yellow-600";
+			case "Muvaffaqiyat":
+				return "text-green-600";
+			case "Ma'lumot":
+				return "text-blue-600";
+			default:
+				return "text-blue-600";
+		}
+	};
+
+	const switchTypeIcon = (type: string) => {
+		switch (type) {
+			case "Xavfsizlik ogohlantirishni":
+				return <TriangleAlert />;
+			case "Eslatma":
+				return <Info />;
+			case "Muvaffaqiyat":
+				return <CircleCheckBig />;
+			case "Ma'lumot":
+				return <Info />;
+			default:
+				return <TriangleAlert />;
+		}
+	};
 
 	return (
-
-		<div className="relative max-w-6xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
-			<div className="px-7 py-8 bg-red-100 w-full">
+		<div className="relative  max-w-6xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
+			<div className={`px-7 py-8 w-full ${switchTypeBg(data.type)}`}>
 				<div className="flex items-center justify-between gap-5 w-full">
-					<div className="bg-red-200 p-2 rounded-2xl">
-						<span className="text-red-700 text-sm">Xavfsizlik ogohlantirishni</span>
+					<div className={`${switchTypeBgText(data.type)} p-2 rounded-2xl`}>
+						<span className={`${switchTypeColor(data.type)} text-sm	`}>{data.type}</span>
 					</div>
-					<div className="bg-red-200 p-2 rounded-2xl text-red-700 flex gap-3 items-center">
-						<TriangleAlert />
-						<span className=" text-sm">Yuqori</span>
+					<div
+						className={`${switchTypeBgText(data.type)} p-2 rounded-2xl ${switchTypeColor(data.type)} flex gap-1 items-center`}
+					>
+						{switchTypeIcon(data.type)}
+						<span className=" text-sm">{data.danger}</span>
 					</div>
 				</div>
 
 				<div className="flex items-center gap-5 mt-10">
-					<h1 className="text-4xl text-red-600 font-semibold">
-						Diqqat! 3-zonada texnik xizmat ko'rsatilmoqda. Iltimos, hududdan uzoqroq bo'ling
-					</h1>
+					<h1 className={`text-4xl ${switchTypeTitle(data.type)} font-semibold`}>{data.title}</h1>
 				</div>
 
 				<div className="mt-5">
-					<span className="text-gray-500 text-lg">
-						Texnik xizmat ko'rsatish jarayoni taxminan 2 soat davom etadi. Barcha xodimlar
-						xavfsizlik qoidalariga qat'iy rioya qilishlari shart.
-					</span>
+					<span className="text-gray-500 text-lg">{data.message}</span>
 				</div>
 
 				<div className="flex items-center gap-1 mt-5">
 					<span className="font-semibold">Author:</span>
-					<span>Dilshod Karimov</span>
-					<span className="text-gray-500"> (Texnik xizmat)</span>
+					<span>{data.author}</span>
+					{/* <span className="text-gray-500"> (Texnik xizmat)</span> */}
 				</div>
 
 				<div className="flex items-center gap-1 mt-5">
 					<span className="font-semibold">Tags:</span>
 				</div>
 				<div className="flex items-center gap-3 mt-5">
-					<span className="bg-sky-100 p-2 text-sm rounded-2xl text-gray-800">Safety</span>
-					<span className="bg-sky-100 p-2 text-sm rounded-2xl text-gray-800">Maintenance</span>
-					<span className="bg-sky-100 p-2 text-sm rounded-2xl text-gray-800">Alert</span>
+					{data.tags.map((tag, index) => (
+						<div key={index} className="bg-sky-100 p-2 rounded-2xl">
+							<span className="text-gray-700 text-sm">{tag}</span>
+						</div>
+					))}
 				</div>
 
 				<div className=" border-b-1 border-b-gray-300 mt-5"></div>
@@ -64,11 +123,11 @@ const Informar: React.FC<EmployeeSummaryProps> = ({
 				<div className="flex items-center gap-5 mt-5">
 					<span className="flex items-center gap-1 text-gray-500">
 						<Calendar size={16} />
-						<span className=" ml-2">01.03.2025</span>
+						<span className=" ml-2">{data.date}</span>
 					</span>
 					<span className="flex items-center gap-1 text-gray-500">
 						<Timer size={16} />
-						<span className=" ml-2">10:15:00</span>
+						<span className=" ml-2">{data.time}</span>
 					</span>
 				</div>
 			</div>
@@ -86,4 +145,4 @@ const Informar: React.FC<EmployeeSummaryProps> = ({
 	);
 };
 
-export default Informar;
+export default InformationsCard;

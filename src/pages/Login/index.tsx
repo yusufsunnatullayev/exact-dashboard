@@ -1,18 +1,17 @@
-import "../../components/LoginBackground/style.css";
-import BackgroundAnimation from "../../components/LoginBackground";
-import ShopIcon3 from "../../assets/icons/Shop3";
-import { Button, Form, message } from "antd";
-import { Lock, User } from "lucide-react";
+import React from "react";
+import { Button, Form, Input, message } from "antd";
+import { Building2, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/authSlices";
 import { http } from "../../services/http";
-import { config } from "../../config";
 import { session } from "../../services/session";
 
 const Login = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
+	const [loading, setLoading] = React.useState(false);
 
 	const onFinish = async (values: any) => {
 		const { username, password } = values;
@@ -21,6 +20,7 @@ const Login = () => {
 			password: password,
 		};
 		try {
+			setLoading(true);
 			console.log("Login:", values);
 			const { data } = await http.post("accounts/login", postData);
 			const { employee, token } = data.data;
@@ -34,27 +34,37 @@ const Login = () => {
 		} catch (error) {
 			message.error(error.message);
 			console.error("Login error:", error);
+		} finally {
+			setLoading(false);
 		}
 	};
 
 	return (
-		<div className="absolute w-full h-full bg-[#1c2331] overflow-hidden">
-			<BackgroundAnimation />
-			<div className="flex flex-col items-center justify-center w-full h-screen relative z-10">
-				<ShopIcon3 />
+		<div className="absolute w-full h-full bg-gray-100 overflow-hidden">
+			<div className="flex flex-col items-center justify-center w-full h-screen relative z-10 mt-[-20px]">
+				<div className="flex flex-col items-center gap-5 ">
+					<div className="flex items-center justify-center bg-blue-500 rounded-xl p-3">
+						<Building2 className="text-white" />
+					</div>
+					<div className="flex flex-col gap-5 items-center justify-center ">
+						<h1 className="text-4xl font-semibold text-gray-800">Login</h1>
+						<p className="text-gray-500 text-sm">Kirish uchun, login va parolingizni kiriting!</p>
+					</div>
+				</div>
 				<Form onFinish={onFinish}>
-					<div className="flex flex-col mt-16 items-center gap-14">
-						<div className="flex flex-col gap-5">
+					<div className="flex flex-col mt-8 items-center gap-5 bg-white drop-shadow-2xl p-5 px-10 rounded-2xl">
+						<div className="flex flex-col gap-3">
 							<Form.Item
 								name="username"
 								rules={[{ required: true, message: "Login kiritish majburiy!" }]}
 							>
-								<div className="flex items-center bg-[#1c2331] w-[300px] p-2 border border-white rounded-md">
-									<User size={20} className="!text-gray-300 mr-2" />
-									<input
+								<div className="flex flex-col gap-2 items-start ">
+									<span className="text-gray-700  text-sm font-bold">Login</span>
+									<Input
 										type="text"
+										className=" w-[300px] !h-10 border border-gray-200 rounded-md !text-gray-500 "
 										placeholder="Login"
-										className="bg-transparent text-gray-300 font-light outline-none flex-1"
+										prefix={<User size={24} className="!text-gray-500 mr-2" />}
 									/>
 								</div>
 							</Form.Item>
@@ -63,20 +73,23 @@ const Login = () => {
 								name="password"
 								rules={[{ required: true, message: "Parol kiritish majburiy!" }]}
 							>
-								<div className="flex items-center bg-[#1c2331] w-[300px] p-2 border border-white rounded-md">
-									<Lock size={20} className="!text-gray-300 mr-2" />
-									<input
-										type="password"
+								<div className="flex flex-col gap-2 items-start ">
+									<span className="text-gray-700 text-sm font-bold">Parol</span>
+
+									<Input.Password
+										className="!w-[300px] h-10 border border-gray-200 rounded-md !text-gray-500 "
 										placeholder="Parol"
-										className="bg-transparent text-gray-300 font-light outline-none flex-1"
+										prefix={<Lock size={20} className="!text-gray-500 mr-2" />}
 									/>
 								</div>
 							</Form.Item>
 						</div>
 						<Button
-							type="default"
+							type="primary"
 							htmlType="submit"
-							className="!w-[300px] !h-[50px] !text-[#1F2937] !font-bold !bg-white hover:!opacity-80"
+							loading={loading}
+							// disabled={loading}
+							className="!w-[300px] !h-[40px]  !font-bold hover:!opacity-80 mb-5"
 						>
 							Kirish
 						</Button>

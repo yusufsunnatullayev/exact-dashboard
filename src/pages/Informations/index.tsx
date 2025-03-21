@@ -1,60 +1,61 @@
 // pages/Employees.tsx
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
-import { EmployeeSummaryProps } from "../../types/Employees";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import InformationsCard from "../../components/InformationsCard";
+import { InformationData } from "../../types/api/Informations";
 
 const Informations: React.FC = () => {
 	const stopTimer = useSelector((state: any) => state.main.stopTimer);
 
-	const employees: EmployeeSummaryProps[] = [
+	const informations: InformationData[] = [
 		{
-			employeeName: "David Chen",
-			role: "Texnik xizmat ko'rsatish muhandisi",
-			department: "Texnik xizmat bo'limi",
-			date: "Fevral 2024",
-			resources: [
-				{ name: "Extruder", quantity: 240, cost: "810 000 so'm" },
-				{ name: "Thermoplast", quantity: 220, cost: "115 000 so'm" },
-				{ name: "Labeling Machine", quantity: 8, cost: "65 000 so'm" },
-				{ name: "Box Packaging Machine", quantity: 7, cost: "75 000 so'm" },
-				{ name: "Assembly Machine", quantity: 300, cost: "3 100 000 so'm" },
-			],
-			targetQuantity: 1,
-			proggresStart: 0,
+			type: "Eslatma",
+			message:
+				"Majburiy xavfsizlik treningi barcha bo'lim xodimlari uchun o'tkaziladi. Trening davomiyligi 2 soat.",
+			title:
+				"Ertaga soat 10:00 da asosiy zalda xavfsizlik bo'yicha treningga qatnashishni unutmang.",
+			danger: "O'rta",
+			author: "Jahongir Aliyev (HR)",
+			tags: ["Training", "Safety", "Mandatory"],
+			date: "2023-06-01",
+			time: "10:00",
 		},
 		{
-			employeeName: "Sarah Johnson",
-			role: "Texnik xizmat ko'rsatish muhandisi",
-			department: "Texnik xizmat bo'limi",
-			date: "Mart 2024",
-			resources: [
-				{ name: "Extruder", quantity: 180, cost: "600 000 so'm" },
-				{ name: "Thermoplast", quantity: 150, cost: "90 000 so'm" },
-				{ name: "Labeling Machine", quantity: 5, cost: "40 000 so'm" },
-				{ name: "Box Packaging Machine", quantity: 10, cost: "100 000 so'm" },
-				{ name: "Assembly Machine", quantity: 40, cost: "2 000 000 so'm" },
-			],
-			targetQuantity: 2,
-			proggresStart: 10,
+			type: "Xavfsizlik ogohlantirishni",
+			message:
+				"Texnik xizmat ko'rsatish jarayoni taxminan 2 soat davom etadi. Barcha xodimlar xavfsizlik qoidalariga qat'iy rioya qilishlari shart.",
+			title: "Diqqat! 3-zonada texnik xizmat ko'rsatilmoqda. Iltimos, hududdan uzoqroq bo'ling",
+			danger: "Yuqori",
+			author: "Dilshod Karimov (Texnik xizmat)",
+			tags: ["Safety", "Maintenance", "Alert"],
+			date: "2023-06-02",
+			time: "12:00",
 		},
 		{
-			employeeName: "John Doe",
-			role: "Texnik xizmat ko'rsatish muhandisi",
-			department: "Texnik xizmat bo'limi",
-			date: "Mart 2024",
-			resources: [
-				{ name: "Extruder", quantity: 180, cost: "600 000 so'm" },
-				{ name: "Thermoplast", quantity: 150, cost: "90 000 so'm" },
-				{ name: "Labeling Machine", quantity: 5, cost: "40 000 so'm" },
-				{ name: "Box Packaging Machine", quantity: 10, cost: "100 000 so'm" },
-				{ name: "Assembly Machine", quantity: 40, cost: "2 000 000 so'm" },
-			],
-			targetQuantity: 2,
-			proggresStart: 10,
+			type: "Muvaffaqiyat",
+			message:
+				"Ishlab chiqarish jamoasi A11 mashinasida soatiga 150 birlik ishlab chiqarish rekordini o'rnatdi. Bu oldingi rekorddan 15% yuqori.",
+			title: "A11 mashinasida yangi samaradorlik rekordi o'rnatildi! Jamoaga tabriklar!",
+			danger: "Oddiy",
+			author: "Aziz Toshmatov (Ishlab chiqarish)",
+			tags: ["Achievement", "Production", "Team Success"],
+			date: "2023-06-03",
+			time: "14:00",
 		},
+		{
+			type: "Ma'lumot",
+			message:
+				"Rejali texnik xizmat ko'rsatish ishlari sababli suv ta'minoti vaqtincha to'xtatiladi. Iltimos, oldindan tayyorgarlik ko'ring.",
+			title: "Suv ta'minoti soat 14:00 dan 16:00 gacha vaqtincha o'chiriladi.",
+			danger: "Oddiy",
+			author: "Gulnora Rahimova (Facility Management)",
+			tags: ["Maintenance", "Utility", "Notice"],
+			date: "2023-06-03",
+			time: "14:00",
+		},
+		//... more information objects...
 	];
 
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -82,21 +83,21 @@ const Informations: React.FC = () => {
 	useEffect(() => {
 		if (!stopTimer) return;
 		const interval = setInterval(() => {
-			goToSlide((currentIndex + 1) % employees.length);
+			goToSlide((currentIndex + 1) % informations.length);
 		}, 15500);
 		return () => clearInterval(interval);
-	}, [currentIndex, stopTimer, employees.length]);
+	}, [currentIndex, stopTimer, informations.length]);
 
 	// Navigation handlers
 	const goToPrevious = () => {
 		setCurrentProgress(0);
 
-		setCurrentIndex((prev) => (prev === 0 ? employees.length - 1 : prev - 1));
+		setCurrentIndex((prev) => (prev === 0 ? informations.length - 1 : prev - 1));
 	};
 
 	const goToNext = () => {
 		setCurrentProgress(0);
-		setCurrentIndex((prev) => (prev === employees.length - 1 ? 0 : prev + 1));
+		setCurrentIndex((prev) => (prev === informations.length - 1 ? 0 : prev + 1));
 	};
 
 	// Handle dot click
@@ -113,9 +114,10 @@ const Informations: React.FC = () => {
 						className="flex transition-transform duration-500 ease-in-out"
 						style={{ transform: `translateX(-${currentIndex * 100}%)` }}
 					>
-						{employees.map((employee, index) => (
+						{informations.map((employee, index) => (
 							<div key={index} className="w-full flex-shrink-0 p-4">
-								<InformationsCard {...employee} />
+								{/* @ts-ignore */}
+								<InformationsCard data={employee} />
 							</div>
 						))}
 					</div>
@@ -143,7 +145,7 @@ const Informations: React.FC = () => {
 					showInfo={false}
 				/>
 				<div className="flex items-center justify-center gap-2 mt-4 cursor-pointer">
-					{employees.map((_, index) => (
+					{informations.map((_, index) => (
 						<button
 							key={index}
 							onClick={() => goToSlide(index)}
