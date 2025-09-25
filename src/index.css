@@ -1,21 +1,39 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-	--basic: #0a4d68;
-	--basicBg: #ebeaea;
+  --basic: #0a4d68;
+  --basicBg: #ebeaea;
+  --color-dark-main: #111827;
 }
 
 body {
-	font-family: "Inter", sans-serif !important;
-	background-color: var(--basicBg);
+  font-family: "Inter", sans-serif !important;
+  background-color: var(--basicBg);
 }
 
 html {
-	background-color: var(--basicBg) !important;
-	font-family: "Inter", sans-serif;
+  background-color: var(--basicBg) !important;
+  font-family: "Inter", sans-serif;
 }
 
 .ant-select-selector {
-	border-radius: 8px !important;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 8px !important; /* already there */
+  border: none !important; /* same as border-none */
+  color: #000 !important; /* text-blue-600 */
+  font-weight: bold !important; /* font-bold */
+  box-shadow: none !important; /* shadow-none */
+  outline: none !important; /* outline-none */
+  background-color: transparent !important;
+}
+
+.dark .ant-select-selector {
+  color: #fff !important; /* text-white in dark mode */
+}
+
+/* Hover state */
+.ant-select-selector:hover {
+  border: none !important; /* border-none */
+  box-shadow: none !important; /* shadow-none */
+  outline: none !important; /* outline-none */
 }
