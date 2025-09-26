@@ -5,6 +5,18 @@
   --basic: #0a4d68;
   --basicBg: #ebeaea;
   --color-dark-main: #111827;
+  --color-main-red1: #e74c3c;
+  --color-main-red2: #c74343;
+  --color-main-red-dark: #891e1f;
+  --color-main-blue1: #3498db;
+  --color-main-blue2: #436de0;
+  --color-main-blue-dark: #1f3e9e;
+  --color-main-green1: #27ae60;
+  --color-main-green2: #2d9275;
+  --color-main-green-dark: #095944;
+  --color-main-yellow1: #f39c12;
+  --color-main-yellow2: #c37330;
+  --color-main-yellow-dark: #843f11;
 }
 
 body {
@@ -36,4 +48,12 @@ html {
   border: none !important; /* border-none */
   box-shadow: none !important; /* shadow-none */
   outline: none !important; /* outline-none */
+}
+
+.bg-stars-light {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' ... fill='%23000000' ... %3C/svg%3E");
+}
+
+.bg-stars-dark {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' ... fill='%23ffffff' ... %3C/svg%3E");
 }

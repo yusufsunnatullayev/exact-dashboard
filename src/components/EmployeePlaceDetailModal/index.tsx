@@ -20,7 +20,7 @@ const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
         <div className="flex flex-col">
           <span className="text-base font-normal text-gray-500">Bo'lim</span>
           <div
-            className="flex items-center gap-2 py-1 px-3 rounded-2xl w-32"
+            className="flex w-fit items-center gap-2 py-1 px-3 rounded-2xl"
             style={{ backgroundColor: item?.color1 }}
           >
             <div

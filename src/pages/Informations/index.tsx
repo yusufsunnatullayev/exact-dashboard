@@ -5,6 +5,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import InformationsCard from "../../components/InformationsCard";
 import { InformationData } from "../../types/api/Informations";
+import {
+  addSecondsToTime,
+  getCurrentTime,
+  isBetween,
+} from "../../helpers/time-handlers";
 
 const Informations: React.FC = () => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
@@ -20,7 +25,9 @@ const Informations: React.FC = () => {
       author: "Jahongir Aliyev (HR)",
       tags: ["Training", "Safety", "Mandatory"],
       date: "2023-06-01",
-      time: "10:00",
+      time: "18:45",
+      U_VisableInDashboard: "Y",
+      U_ShowTime: 340,
     },
     {
       type: "Xavfsizlik ogohlantirishni",
@@ -32,7 +39,9 @@ const Informations: React.FC = () => {
       author: "Dilshod Karimov (Texnik xizmat)",
       tags: ["Safety", "Maintenance", "Alert"],
       date: "2023-06-02",
-      time: "12:00",
+      time: "18:45",
+      U_VisableInDashboard: "Y",
+      U_ShowTime: 440,
     },
     {
       type: "Muvaffaqiyat",
@@ -44,7 +53,9 @@ const Informations: React.FC = () => {
       author: "Aziz Toshmatov (Ishlab chiqarish)",
       tags: ["Achievement", "Production", "Team Success"],
       date: "2023-06-03",
-      time: "14:00",
+      time: "18:45",
+      U_VisableInDashboard: "Y",
+      U_ShowTime: 600,
     },
     {
       type: "Ma'lumot",
@@ -55,13 +66,23 @@ const Informations: React.FC = () => {
       author: "Gulnora Rahimova (Facility Management)",
       tags: ["Maintenance", "Utility", "Notice"],
       date: "2023-06-03",
-      time: "14:00",
+      time: "18:45",
+      U_VisableInDashboard: "Y",
+      U_ShowTime: 550,
     },
-    //... more information objects...
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
+  const filtered = informations.filter((item) => {
+    const showUntil = addSecondsToTime(item.time, item.U_ShowTime);
+    if (
+      item.U_VisableInDashboard === "Y" &&
+      isBetween(item.time, showUntil, getCurrentTime())
+    ) {
+      return item;
+    }
+  });
 
   // Handle progress animation and reset
   useEffect(() => {
@@ -85,25 +106,21 @@ const Informations: React.FC = () => {
   useEffect(() => {
     if (!stopTimer) return;
     const interval = setInterval(() => {
-      goToSlide((currentIndex + 1) % informations.length);
+      goToSlide((currentIndex + 1) % filtered.length);
     }, 15500);
     return () => clearInterval(interval);
-  }, [currentIndex, stopTimer, informations.length]);
+  }, [currentIndex, stopTimer, filtered.length]);
 
   // Navigation handlers
   const goToPrevious = () => {
     setCurrentProgress(0);
 
-    setCurrentIndex((prev) =>
-      prev === 0 ? informations.length - 1 : prev - 1
-    );
+    setCurrentIndex((prev) => (prev === 0 ? filtered.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
     setCurrentProgress(0);
-    setCurrentIndex((prev) =>
-      prev === informations.length - 1 ? 0 : prev + 1
-    );
+    setCurrentIndex((prev) => (prev === filtered.length - 1 ? 0 : prev + 1));
   };
 
   // Handle dot click
@@ -120,10 +137,10 @@ const Informations: React.FC = () => {
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {informations.map((employee, index) => (
+            {filtered.map((item, index) => (
               <div key={index} className="w-full flex-shrink-0 p-4">
                 {/* @ts-ignore */}
-                <InformationsCard data={employee} />
+                <InformationsCard data={item} />
               </div>
             ))}
           </div>
@@ -131,15 +148,18 @@ const Informations: React.FC = () => {
 
         <button
           onClick={goToPrevious}
-          className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
-          <ChevronLeft size={24} className="text-gray-600" />
+          <ChevronLeft size={24} className="text-gray-600 dark:text-gray-300" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
-          <ChevronRight size={24} className="text-gray-600" />
+          <ChevronRight
+            size={24}
+            className="text-gray-600 dark:text-gray-300"
+          />
         </button>
       </div>
 
@@ -151,7 +171,7 @@ const Informations: React.FC = () => {
           showInfo={false}
         />
         <div className="flex items-center justify-center gap-2 mt-4 cursor-pointer">
-          {informations.map((_, index) => (
+          {filtered.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
