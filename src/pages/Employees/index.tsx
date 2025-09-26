@@ -120,15 +120,18 @@ const Employees: React.FC = () => {
 
         <button
           onClick={goToPrevious}
-          className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
-          <ChevronLeft size={24} className="text-gray-600" />
+          <ChevronLeft size={24} className="text-gray-600 dark:text-gray-300" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
-          <ChevronRight size={24} className="text-gray-600" />
+          <ChevronRight
+            size={24}
+            className="text-gray-600 dark:text-gray-300"
+          />
         </button>
       </div>
 
