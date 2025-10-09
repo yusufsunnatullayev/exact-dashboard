@@ -4,81 +4,26 @@ import { Progress } from "antd";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import InformationsCard from "../../components/InformationsCard";
-import { InformationData } from "../../types/api/Informations";
 import {
   addSecondsToTime,
   getCurrentTime,
   isBetween,
 } from "../../helpers/time-handlers";
+import { useAnnouncments } from "../../services/announcments/announcments.queries";
+import Loader from "../../components/Loader";
 
 const Informations: React.FC = () => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
-
-  const informations: InformationData[] = [
-    {
-      type: "Eslatma",
-      message:
-        "Majburiy xavfsizlik treningi barcha bo'lim xodimlari uchun o'tkaziladi. Trening davomiyligi 2 soat.",
-      title:
-        "Ertaga soat 10:00 da asosiy zalda xavfsizlik bo'yicha treningga qatnashishni unutmang.",
-      danger: "O'rta",
-      author: "Jahongir Aliyev (HR)",
-      tags: ["Training", "Safety", "Mandatory"],
-      date: "2023-06-01",
-      time: "18:45",
-      U_VisableInDashboard: "Y",
-      U_ShowTime: 340,
-    },
-    {
-      type: "Xavfsizlik ogohlantirishni",
-      message:
-        "Texnik xizmat ko'rsatish jarayoni taxminan 2 soat davom etadi. Barcha xodimlar xavfsizlik qoidalariga qat'iy rioya qilishlari shart.",
-      title:
-        "Diqqat! 3-zonada texnik xizmat ko'rsatilmoqda. Iltimos, hududdan uzoqroq bo'ling",
-      danger: "Yuqori",
-      author: "Dilshod Karimov (Texnik xizmat)",
-      tags: ["Safety", "Maintenance", "Alert"],
-      date: "2023-06-02",
-      time: "18:45",
-      U_VisableInDashboard: "Y",
-      U_ShowTime: 440,
-    },
-    {
-      type: "Muvaffaqiyat",
-      message:
-        "Ishlab chiqarish jamoasi A11 mashinasida soatiga 150 birlik ishlab chiqarish rekordini o'rnatdi. Bu oldingi rekorddan 15% yuqori.",
-      title:
-        "A11 mashinasida yangi samaradorlik rekordi o'rnatildi! Jamoaga tabriklar!",
-      danger: "Oddiy",
-      author: "Aziz Toshmatov (Ishlab chiqarish)",
-      tags: ["Achievement", "Production", "Team Success"],
-      date: "2023-06-03",
-      time: "18:45",
-      U_VisableInDashboard: "Y",
-      U_ShowTime: 600,
-    },
-    {
-      type: "Ma'lumot",
-      message:
-        "Rejali texnik xizmat ko'rsatish ishlari sababli suv ta'minoti vaqtincha to'xtatiladi. Iltimos, oldindan tayyorgarlik ko'ring.",
-      title: "Suv ta'minoti soat 14:00 dan 16:00 gacha vaqtincha o'chiriladi.",
-      danger: "Oddiy",
-      author: "Gulnora Rahimova (Facility Management)",
-      tags: ["Maintenance", "Utility", "Notice"],
-      date: "2023-06-03",
-      time: "18:45",
-      U_VisableInDashboard: "Y",
-      U_ShowTime: 550,
-    },
-  ];
+  const { data: announcmentsData, isLoading } = useAnnouncments();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
-  const filtered = informations.filter((item) => {
-    const showUntil = addSecondsToTime(item.time, item.U_ShowTime);
+  const filtered = announcmentsData?.data.filter((item) => {
+    // const showUntil = addSecondsToTime(item.announcementTime, item.showTime);
+    const showUntil = addSecondsToTime("12:33", 1000);
     if (
-      item.U_VisableInDashboard === "Y" &&
-      isBetween(item.time, showUntil, getCurrentTime())
+      item.visableInDashboard === "Y" &&
+      isBetween("12:33", showUntil, getCurrentTime())
     ) {
       return item;
     }
@@ -106,27 +51,29 @@ const Informations: React.FC = () => {
   useEffect(() => {
     if (!stopTimer) return;
     const interval = setInterval(() => {
-      goToSlide((currentIndex + 1) % filtered.length);
+      goToSlide((currentIndex + 1) % filtered?.length);
     }, 15500);
     return () => clearInterval(interval);
-  }, [currentIndex, stopTimer, filtered.length]);
+  }, [currentIndex, stopTimer, filtered?.length]);
 
   // Navigation handlers
   const goToPrevious = () => {
     setCurrentProgress(0);
 
-    setCurrentIndex((prev) => (prev === 0 ? filtered.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? filtered?.length - 1 : prev - 1));
   };
 
   const goToNext = () => {
     setCurrentProgress(0);
-    setCurrentIndex((prev) => (prev === filtered.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev === filtered?.length - 1 ? 0 : prev + 1));
   };
 
   // Handle dot click
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="max-w-6xl mx-auto p-4">

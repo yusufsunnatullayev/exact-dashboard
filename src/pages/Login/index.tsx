@@ -1,11 +1,10 @@
 import React from "react";
 import { Button, Form, Input, message } from "antd";
-import { Building2, Lock, Mail } from "lucide-react";
+import { Building2, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/slices/authSlices";
 import { http } from "../../services/http";
-import { session } from "../../services/session";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,23 +15,24 @@ const Login = () => {
   const onFinish = async (values: any) => {
     const { username, password } = values;
     const postData = {
-      login: username,
-      password: password,
+      employeeCode: username,
+      externalEmployeeNumber: password,
     };
     try {
       setLoading(true);
       console.log("Login:", values);
-      const { data } = await http.post("accounts/login", postData);
-      const { employee, token } = data.data;
+      console.log("Login payload", postData);
+      const res = await http.post("/login/log-in", postData);
+      console.log(res);
+      const { firstName, lastName, accessToken } = res.data.data;
 
-      const user = `${employee.firstName} ${employee.lastName}`;
+      const user = `${firstName} ${lastName}`;
 
-      dispatch(login({ token: token, user: user }));
+      dispatch(login({ token: accessToken, user: user }));
       message.success(
-        `Muvaffaqiyatli Login qilindi  ${employee.firstName} ${employee.lastName} !`
+        `Muvaffaqiyatli Login qilindi  ${firstName} ${lastName} !`
       );
       navigate("/dashboard");
-      session.set(token);
     } catch (error) {
       message.error(error.message);
       console.error("Login error:", error);
@@ -61,20 +61,20 @@ const Login = () => {
           <div className="w-[450px] flex flex-col mt-8 items-center bg-white dark:bg-[#1F2937] drop-shadow-2xl p-10 pb-4 rounded-2xl">
             <div className="w-full flex flex-col">
               <Form.Item
-                name="email"
+                name="username"
                 rules={[
                   { required: true, message: "Email kiritish majburiy!" },
                 ]}
               >
                 <div className="flex flex-col gap-2 items-start ">
                   <span className="text-gray-700 dark:text-gray-100  text-sm font-medium">
-                    Email manzil
+                    Foydalanuvchi nomi
                   </span>
                   <Input
                     type="text"
                     className="!w-full !bg-transparent dark:!text-gray-100 !h-10 !rounded-xl border border-gray-200 !text-gray-500 "
-                    placeholder="siz@misol.com"
-                    prefix={<Mail size={20} color="gray" className="mr-1" />}
+                    placeholder="warehouse manager"
+                    prefix={<User size={20} color="gray" className="mr-1" />}
                   />
                 </div>
               </Form.Item>

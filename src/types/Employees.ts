@@ -1,15 +1,14 @@
 export interface Resource {
-	name: string;
-	quantity: number;
-	cost: string;
+  name: string;
+  quantity: number;
+  cost: string;
 }
 
 export interface EmployeeSummaryProps {
-	employeeName: string;
-	role: string;
-	department: string;
-	date: string;
-	resources: Resource[];
-	targetQuantity?: number;
+  firstName: string;
+  lastName: string;
+  oy_nomi: string;
+  detailedInformation: any[];
+  targetQuantity?: number;
   proggresStart?: number;
 }

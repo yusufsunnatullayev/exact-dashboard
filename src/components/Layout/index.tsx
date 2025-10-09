@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutProps> = () => {
       }}
     >
       <div
-        className={`flex flex-col w-full min-h-screen bg-gray-100 dark:bg-dark-main transition-colors duration-200`}
+        className={`flex flex-col w-full h-screen bg-gray-100 dark:bg-dark-main transition-colors duration-200`}
       >
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <div className="flex-1 relative">{renderActiveTab()}</div>

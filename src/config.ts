@@ -1,5 +1,5 @@
 export const config = {
-	baseURL: "https://bobs-dashboard-back.bis-apps.com/api/",
-	tokenKEY: "token",
-	backendTokenKEY: "Authorization",
+  baseURL: "https://exeact-dashboard.bis-apps.com/api/",
+  tokenKEY: "token",
+  backendTokenKEY: "Authorization",
 };

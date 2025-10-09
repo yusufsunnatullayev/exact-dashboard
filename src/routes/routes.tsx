@@ -5,12 +5,15 @@ import Login from "../pages/Login";
 import Layout from "../components/Layout";
 
 export const AppRoutes: React.FC = () => {
-	return (
-		<Routes>
-			<Route path="/" element={<Navigate to="/login" replace />} />
-			<Route path="/dashboard" element={<ProtectedRoute element={<Layout />} />} />
-			<Route path="/login" element={<Login />} />
-			<Route path="*" element={<Navigate to="/login" replace />} />
-		</Routes>
-	);
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoute element={<Layout />} />}
+      />
+      <Route path="/login" element={<Login />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
 };

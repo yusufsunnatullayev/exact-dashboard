@@ -3,20 +3,22 @@ import { EmployeeSummaryProps } from "../../types/Employees";
 
 // Single Employee Summary Card Component
 const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
-  employeeName,
-  role,
-  department,
-  date,
-  resources,
+  firstName,
+  lastName,
+  oy_nomi,
+  detailedInformation,
   targetQuantity = 1500,
   proggresStart = 0,
 }) => {
-  const totalQuantity = resources.reduce(
-    (sum, resource) => sum + resource.quantity,
+  const totalQuantity = detailedInformation?.reduce(
+    (sum, resource) => sum + resource.work_orders_completed,
     0
   );
-  const totalCost = resources.reduce((sum, resource) => {
-    const cost = parseInt(resource.cost.replace(/[^0-9]/g, ""));
+  const totalCost = detailedInformation?.reduce((sum, resource) => {
+    if (typeof resource.revenue !== "number") {
+      return resource.revenue;
+    }
+    const cost = parseInt(resource.revenue.replace(/[^0-9]/g, ""));
     return sum + cost;
   }, 0);
 
@@ -26,23 +28,23 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
         <div className="flex items-center gap-5">
           <div className="bg-gray-300 dark:bg-[#1D283A] rounded-full p-2 w-20 h-20 flex items-center justify-center shadow-2xl">
             <span className="text-white font-semibold text-3xl">
-              {employeeName[0]}
+              {firstName[0]}
             </span>
           </div>
           <div className="flex flex-col items-start gap-1">
             <h1 className="text-white font-semibold text-3xl">
-              {employeeName}
+              {firstName} {lastName}
             </h1>
-            <p className="text-gray-100 text-sm">{role}</p>
+            <p className="text-gray-100 text-sm">Lavozim</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <h1 className="text-gray-100 font-semibold ">{department}</h1>
-          <p className="text-gray-100 text-sm">{date}</p>
+          <h1 className="text-gray-100 font-semibold ">Bo'lim</h1>
+          <p className="text-gray-100 text-sm">{oy_nomi}</p>
         </div>
       </div>
 
-      <div className="px-5 dark:bg-[#0F1729] border border-white dark:border-gray-600">
+      <div className="px-5 dark:bg-[#0F1729] border border-white dark:border-gray-600 max-h-[50vh] overflow-y-auto">
         <table className="w-full text-left">
           <thead>
             <tr className="text-gray-600 dark:text-gray-100 px-5">
@@ -52,22 +54,22 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
             </tr>
           </thead>
           <tbody>
-            {resources.map((resource, index) => (
+            {detailedInformation?.map((resource, index) => (
               <tr
                 key={index}
                 className="border-t border-gray-200 dark:border-gray-600  dark:text-gray-100"
               >
-                <td className="py-5 ">{resource.name}</td>
-                <td className="py-5  text-center">{resource.quantity}</td>
-                <td className="py-5  text-right">{resource.cost}</td>
+                <td className="py-5 ">{resource.description}</td>
+                <td className="py-5  text-center">
+                  {resource.work_orders_completed}
+                </td>
+                <td className="py-5  text-right">{resource.revenue}</td>
               </tr>
             ))}
             <tr className="border-t border-gray-200 dark:border-gray-600 font-semibold  dark:text-gray-100">
               <td className="py-5">Jami</td>
-              <td className="py-5 text-center">{totalQuantity}</td>
-              <td className="py-5 text-right">
-                {totalCost.toLocaleString()} so'm
-              </td>
+              <td className="py-5 text-center">{}</td>
+              <td className="py-5 text-right">{totalCost}</td>
             </tr>
           </tbody>
         </table>

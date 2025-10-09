@@ -1,63 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import EmployeeSummaryCard from "../../components/EmployeesCard";
-import { EmployeeSummaryProps } from "../../types/Employees";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useEmployees } from "../../services/employees/employees.queries";
+import Loader from "../../components/Loader";
 
 const Employees: React.FC = () => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
-
-  const employees: EmployeeSummaryProps[] = [
-    {
-      employeeName: "David Chen",
-      role: "Texnik xizmat ko'rsatish muhandisi",
-      department: "Texnik xizmat bo'limi",
-      date: "Fevral 2024",
-      resources: [
-        { name: "Extruder", quantity: 240, cost: "810 000 so'm" },
-        { name: "Thermoplast", quantity: 220, cost: "115 000 so'm" },
-        { name: "Labeling Machine", quantity: 8, cost: "65 000 so'm" },
-        { name: "Box Packaging Machine", quantity: 7, cost: "75 000 so'm" },
-        { name: "Assembly Machine", quantity: 300, cost: "3 100 000 so'm" },
-      ],
-      targetQuantity: 1,
-      proggresStart: 0,
-    },
-    {
-      employeeName: "Sarah Johnson",
-      role: "Texnik xizmat ko'rsatish muhandisi",
-      department: "Texnik xizmat bo'limi",
-      date: "Mart 2024",
-      resources: [
-        { name: "Extruder", quantity: 180, cost: "600 000 so'm" },
-        { name: "Thermoplast", quantity: 150, cost: "90 000 so'm" },
-        { name: "Labeling Machine", quantity: 5, cost: "40 000 so'm" },
-        { name: "Box Packaging Machine", quantity: 10, cost: "100 000 so'm" },
-        { name: "Assembly Machine", quantity: 40, cost: "2 000 000 so'm" },
-      ],
-      targetQuantity: 2,
-      proggresStart: 10,
-    },
-    {
-      employeeName: "John Doe",
-      role: "Texnik xizmat ko'rsatish muhandisi",
-      department: "Texnik xizmat bo'limi",
-      date: "Mart 2024",
-      resources: [
-        { name: "Extruder", quantity: 180, cost: "600 000 so'm" },
-        { name: "Thermoplast", quantity: 150, cost: "90 000 so'm" },
-        { name: "Labeling Machine", quantity: 5, cost: "40 000 so'm" },
-        { name: "Box Packaging Machine", quantity: 10, cost: "100 000 so'm" },
-        { name: "Assembly Machine", quantity: 40, cost: "2 000 000 so'm" },
-      ],
-      targetQuantity: 2,
-      proggresStart: 10,
-    },
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
+
+  const { data: employeesData, isLoading } = useEmployees();
 
   // Handle progress animation and reset
   useEffect(() => {
@@ -81,25 +35,31 @@ const Employees: React.FC = () => {
   useEffect(() => {
     if (!stopTimer) return;
     const interval = setInterval(() => {
-      goToSlide((currentIndex + 1) % employees.length);
+      goToSlide((currentIndex + 1) % employeesData?.data?.length);
     }, 15500);
     return () => clearInterval(interval);
-  }, [currentIndex, stopTimer, employees.length]);
+  }, [currentIndex, stopTimer, employeesData?.data?.length]);
 
   const goToPrevious = () => {
     setCurrentProgress(0);
 
-    setCurrentIndex((prev) => (prev === 0 ? employees.length - 1 : prev - 1));
+    setCurrentIndex((prev) =>
+      prev === 0 ? employeesData?.data?.length - 1 : prev - 1
+    );
   };
 
   const goToNext = () => {
     setCurrentProgress(0);
-    setCurrentIndex((prev) => (prev === employees.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) =>
+      prev === employeesData?.data?.length - 1 ? 0 : prev + 1
+    );
   };
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
   };
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -110,8 +70,8 @@ const Employees: React.FC = () => {
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {employees.map((employee, index) => (
-              <div key={index} className="w-full flex-shrink-0 p-4">
+            {employeesData?.data.map((employee, index) => (
+              <div key={index} className="w-full h-[75vh] flex-shrink-0 p-4">
                 <EmployeeSummaryCard {...employee} />
               </div>
             ))}
@@ -143,7 +103,7 @@ const Employees: React.FC = () => {
           showInfo={false}
         />
         <div className="flex items-center justify-center gap-2 mt-4 cursor-pointer">
-          {employees.map((_, index) => (
+          {employeesData?.data.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}

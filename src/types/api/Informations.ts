@@ -1,14 +1,17 @@
 export interface InformationData {
-  type: string;
-  message: string;
-  title: string;
-  danger: string;
+  announcementTime: string;
+  announcementType: string;
   author: string;
-  tags: string[];
-  date: string;
-  time: string;
-  U_VisableInDashboard: string;
-  U_ShowTime: number;
+  code: string;
+  message: string;
+  messageColor: string;
+  name: string;
+  priority: string;
+  showTime: string | null;
+  title: string;
+  titleColor: string;
+  typeColor: string;
+  visableInDashboard: string;
 }
 
 export interface InformationsProps {
