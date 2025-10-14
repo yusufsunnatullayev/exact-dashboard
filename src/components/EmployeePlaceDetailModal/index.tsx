@@ -11,17 +11,17 @@ const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
       onCancel={() => setIsModalOpen && setIsModalOpen(false)}
       width={480}
     >
-      <h1 className="text-xl font-bold">{item?.name}</h1>
+      <h1 className="text-xl font-bold">{item?.employeeName}</h1>
       <div className="w-full flex flex-col gap-4 mt-7">
         <div className="flex flex-col">
           <span className="text-base font-normal text-gray-500">Lavozim</span>
-          <h1 className="text-base font-medium">{item?.position}</h1>
+          <h1 className="text-base font-medium">{item?.machineName}</h1>
         </div>
         <div className="flex flex-col">
           <span className="text-base font-normal text-gray-500">Bo'lim</span>
           <div
             className="flex w-fit items-center gap-2 py-1 px-3 rounded-2xl"
-            style={{ backgroundColor: item?.color1 }}
+            style={{ backgroundColor: item?.name }}
           >
             <div
               className="w-2 h-2 rounded-full"
@@ -31,7 +31,7 @@ const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
               className="text-base font-medium"
               style={{ color: item?.color2 }}
             >
-              {item?.section}
+              {item?.resourseName}
             </h1>
           </div>
         </div>
@@ -39,10 +39,10 @@ const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
           <span className="text-base font-normal text-gray-500">
             O'tirish joyi
           </span>
-          <h1 className="text-2xl font-bold">{item?.seat}</h1>
-          <span className="text-sm font-normal text-gray-500">
+          <h1 className="text-2xl font-bold">{item?.resourseCode}</h1>
+          {/* <span className="text-sm font-normal text-gray-500">
             Qator 1, Bo'lim A
-          </span>
+          </span> */}
         </div>
         <div className="flex flex-col">
           <span className="text-base font-normal text-gray-500">

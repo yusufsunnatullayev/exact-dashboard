@@ -18,23 +18,20 @@ const EmployeePlaceCard = ({ item, setSelectedEmployee, setIsModalOpen }) => {
         }}
         className="relative h-[100px] flex flex-col items-center justify-center border-2 rounded-xl"
         style={{
-          backgroundColor: item.color1,
+          backgroundColor: item.name,
           borderColor: item.color2,
         }}
       >
         <h1 className="text-sm font-semibold line-clamp-1 text-center">
-          {item.name}
+          {item.employeeName}
         </h1>
-        <span className="text-xs text-gray-600">{item.position}</span>
+        <span className="text-xs text-gray-600">{item.machineName}</span>
         <div
           className="w-9 h-5 rounded-xl flex items-center justify-center mt-2"
-          style={{ backgroundColor: `${item.color2}50` }}
+          style={{ backgroundColor: `${item.name}50` }}
         >
-          <span
-            className="text-xs font-semibold"
-            style={{ color: item.color2 }}
-          >
-            {item.seat}
+          <span className="text-xs font-semibold" style={{ color: item.name }}>
+            {item.resourseCode}
           </span>
         </div>
       </div>

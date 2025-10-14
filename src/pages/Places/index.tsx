@@ -1,11 +1,16 @@
 import { useState } from "react";
 import EmployeePlaceCard from "../../components/EmployeePlaceCard";
-import { employees } from "../../helpers/constants";
 import EmployeePlaceDetailModal from "../../components/EmployeePlaceDetailModal";
+import { usePlaces } from "../../services/places/places.queries";
+import Loader from "../../components/Loader";
 
 const Places = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: places, isLoading } = usePlaces();
+
+  if (isLoading) return <Loader />;
 
   return (
     <div className="max-w-7xl mx-auto py-10 flex flex-col gap-10">
@@ -25,9 +30,9 @@ const Places = () => {
           Ombor xodimlari o'tirish joylari xaritasi
         </h1>
         <div className="w-full grid grid-cols-8">
-          {employees.map((item) => (
+          {places?.data?.map((item) => (
             <EmployeePlaceCard
-              key={item.id}
+              key={item.code}
               item={item}
               setIsModalOpen={setIsModalOpen}
               setSelectedEmployee={setSelectedEmployee}

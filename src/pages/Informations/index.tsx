@@ -11,6 +11,7 @@ import {
 } from "../../helpers/time-handlers";
 import { useAnnouncments } from "../../services/announcments/announcments.queries";
 import Loader from "../../components/Loader";
+import DataNotFound from "../../components/DataNotFound";
 
 const Informations: React.FC = () => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
@@ -20,10 +21,10 @@ const Informations: React.FC = () => {
   const [currentProgress, setCurrentProgress] = useState(0);
   const filtered = announcmentsData?.data.filter((item) => {
     // const showUntil = addSecondsToTime(item.announcementTime, item.showTime);
-    const showUntil = addSecondsToTime("12:33", 1000);
+    const showUntil = addSecondsToTime("14:55", 100000000000);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("12:33", showUntil, getCurrentTime())
+      isBetween("14:55", showUntil, getCurrentTime())
     ) {
       return item;
     }
@@ -74,6 +75,10 @@ const Informations: React.FC = () => {
   };
 
   if (isLoading) return <Loader />;
+
+  if (filtered?.length === 0) {
+    return <DataNotFound />;
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4">

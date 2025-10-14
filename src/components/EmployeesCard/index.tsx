@@ -1,5 +1,7 @@
 import React from "react";
 import { EmployeeSummaryProps } from "../../types/Employees";
+import { formatNumber } from "../../helpers/formatNumber";
+import { translateMonthToUzbek } from "../../helpers/translateMonth";
 
 // Single Employee Summary Card Component
 const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
@@ -11,7 +13,7 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
   proggresStart = 0,
 }) => {
   const totalQuantity = detailedInformation?.reduce(
-    (sum, resource) => sum + resource.work_orders_completed,
+    (sum, resource) => sum + Number(resource.work_orders_completed),
     0
   );
   const totalCost = detailedInformation?.reduce((sum, resource) => {
@@ -35,12 +37,12 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
             <h1 className="text-white font-semibold text-3xl">
               {firstName} {lastName}
             </h1>
-            <p className="text-gray-100 text-sm">Lavozim</p>
           </div>
         </div>
         <div className="flex flex-col items-end gap-2">
-          <h1 className="text-gray-100 font-semibold ">Bo'lim</h1>
-          <p className="text-gray-100 text-sm">{oy_nomi}</p>
+          <h1 className="text-gray-100 font-semibold ">
+            {translateMonthToUzbek(oy_nomi)}
+          </h1>
         </div>
       </div>
 
@@ -61,14 +63,16 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
               >
                 <td className="py-5 ">{resource.description}</td>
                 <td className="py-5  text-center">
-                  {resource.work_orders_completed}
+                  {formatNumber(resource.work_orders_completed)}
                 </td>
                 <td className="py-5  text-right">{resource.revenue}</td>
               </tr>
             ))}
             <tr className="border-t border-gray-200 dark:border-gray-600 font-semibold  dark:text-gray-100">
               <td className="py-5">Jami</td>
-              <td className="py-5 text-center">{}</td>
+              <td className="py-5 text-center">
+                {formatNumber(totalQuantity)}
+              </td>
               <td className="py-5 text-right">{totalCost}</td>
             </tr>
           </tbody>

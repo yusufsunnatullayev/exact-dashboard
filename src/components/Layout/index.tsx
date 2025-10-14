@@ -9,6 +9,7 @@ import Places from "../../pages/Places";
 
 const Layout: React.FC<LayoutProps> = () => {
   const activeTab = useSelector((state: any) => state.main.activeTab);
+  const [selectedMonth, setSelectedMonth] = useState("Barcha oylar");
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem("darkMode") || "false")
   );
@@ -25,7 +26,7 @@ const Layout: React.FC<LayoutProps> = () => {
   const renderActiveTab = () => {
     switch (activeTab) {
       case "employees":
-        return <Employees />;
+        return <Employees selectedMonth={selectedMonth} />;
       case "informations":
         return <Informations />;
       case "places":
@@ -50,9 +51,14 @@ const Layout: React.FC<LayoutProps> = () => {
       }}
     >
       <div
-        className={`flex flex-col w-full h-screen bg-gray-100 dark:bg-dark-main transition-colors duration-200`}
+        className={`flex flex-col w-full min-h-screen bg-gray-100 dark:bg-dark-main transition-colors duration-200`}
       >
-        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Navbar
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
         <div className="flex-1 relative">{renderActiveTab()}</div>
       </div>
     </ConfigProvider>

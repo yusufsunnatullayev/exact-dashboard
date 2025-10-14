@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExitModal from "../Modal/ExitModal";
-import { Select } from "antd";
+import { Calendar, Select } from "antd";
 import WhsIcon from "../../assets/icons/Warehouse";
 import {
   BellRing,
+  Calendar1,
   LayoutDashboard,
   LogOut,
   Moon,
@@ -22,7 +23,130 @@ import Time from "../Time/index";
 interface NavbarProps {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedMonth: string;
+  setSelectedMonth: React.Dispatch<React.SetStateAction<string>>;
 }
+
+const monthOptions = [
+  {
+    value: "Barcha oylar",
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Barcha oylar</span>
+      </div>
+    ),
+  },
+  {
+    value: 1,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Yanvar</span>
+      </div>
+    ),
+  },
+  {
+    value: 2,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Fevral</span>
+      </div>
+    ),
+  },
+  {
+    value: 3,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Mart</span>
+      </div>
+    ),
+  },
+  {
+    value: 4,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Aprel</span>
+      </div>
+    ),
+  },
+  {
+    value: 5,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>May</span>
+      </div>
+    ),
+  },
+  {
+    value: 6,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Iyun</span>
+      </div>
+    ),
+  },
+  {
+    value: 7,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Iyul</span>
+      </div>
+    ),
+  },
+  {
+    value: 8,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Avgust</span>
+      </div>
+    ),
+  },
+  {
+    value: 9,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Sentabr</span>
+      </div>
+    ),
+  },
+  {
+    value: 10,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Oktabr</span>
+      </div>
+    ),
+  },
+  {
+    value: 11,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Noyabr</span>
+      </div>
+    ),
+  },
+  {
+    value: 12,
+    label: (
+      <div className="flex items-center gap-2">
+        <Calendar1 className="w-4 h-4" />
+        <span>Dekabr</span>
+      </div>
+    ),
+  },
+];
+
 const tabs = [
   {
     id: 1,
@@ -44,7 +168,12 @@ const tabs = [
   },
 ];
 
-const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
+const Navbar: React.FC<NavbarProps> = ({
+  darkMode,
+  setDarkMode,
+  selectedMonth,
+  setSelectedMonth,
+}) => {
   const exitRef: any = useRef(null);
   const { activeTab: activeTabRedux, stopTimer: stopTimerRedux } = useSelector(
     (state: any) => state.main
@@ -52,7 +181,6 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
   const dispatch = useDispatch();
 
   const [activeTab, setActiveTab] = useState<string>(activeTabRedux);
-  const [warehouses, setWarehouses] = useState<string>("ishlab_chiqarish");
   const [stopTimer, setStopTimer] = useState<boolean>(stopTimerRedux);
 
   const handleTabChange = (tab: string) => {
@@ -73,8 +201,8 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
           <Select
             defaultValue="Warehouse"
             style={{ width: "100%" }}
-            value={warehouses}
-            onChange={(value) => setWarehouses(value)}
+            value={selectedMonth}
+            onChange={(value) => setSelectedMonth(value)}
             placeholder="Select a warehouse"
             className="custom-select"
             classNames={{
@@ -82,35 +210,7 @@ const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
                 root: "!w-[220px]",
               },
             }}
-            options={[
-              {
-                value: "ishlab_chiqarish",
-                label: (
-                  <div className="flex items-center gap-2">
-                    <WhsIcon />
-                    <span>Ishlab chiqarish</span>
-                  </div>
-                ),
-              },
-              {
-                value: "logistika",
-                label: (
-                  <div className="flex items-center gap-2">
-                    <WhsIcon />
-                    <span>Logistika</span>
-                  </div>
-                ),
-              },
-              {
-                value: "ofis",
-                label: (
-                  <div className="flex items-center gap-2">
-                    <WhsIcon />
-                    <span>Ofis</span>
-                  </div>
-                ),
-              },
-            ]}
+            options={monthOptions}
           />
         </div>
         {/* Navigation 🚩 */}
