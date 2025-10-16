@@ -1,11 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { getAnnouncements } from "./announcments.service";
 
-const ANNOUNCMENTS_KEY = ["announcments"];
-
-export function useAnnouncments() {
+export function useAnnouncments(code?: string) {
   return useQuery({
-    queryKey: ANNOUNCMENTS_KEY,
-    queryFn: getAnnouncements,
+    queryKey: ["announcments", code],
+    queryFn: () => getAnnouncements(code),
   });
 }

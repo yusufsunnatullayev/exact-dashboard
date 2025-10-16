@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ExitModal from "../Modal/ExitModal";
-import { Calendar, Select } from "antd";
+import { Select } from "antd";
 import WhsIcon from "../../assets/icons/Warehouse";
 import {
   BellRing,
@@ -19,12 +19,15 @@ import {
   setStopTimer as setStopTimerRedux,
 } from "../../store/slices/mainSlices";
 import Time from "../Time/index";
+import { useWarehouses } from "../../services/warehouses/warehouses.queries";
 
 interface NavbarProps {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
   selectedMonth: string;
   setSelectedMonth: React.Dispatch<React.SetStateAction<string>>;
+  selectedWhs: string;
+  setSelectedWhs: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const monthOptions = [
@@ -173,6 +176,8 @@ const Navbar: React.FC<NavbarProps> = ({
   setDarkMode,
   selectedMonth,
   setSelectedMonth,
+  selectedWhs,
+  setSelectedWhs,
 }) => {
   const exitRef: any = useRef(null);
   const { activeTab: activeTabRedux, stopTimer: stopTimerRedux } = useSelector(
@@ -182,6 +187,35 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const [activeTab, setActiveTab] = useState<string>(activeTabRedux);
   const [stopTimer, setStopTimer] = useState<boolean>(stopTimerRedux);
+  const [whsOptions, setWhsOptions] = useState([
+    {
+      value: "Barcha omborlar",
+      label: (
+        <div className="flex items-center gap-2">
+          <WhsIcon className="w-4 h-4" />
+          <span>Barcha omborlar</span>
+        </div>
+      ),
+    },
+  ]);
+
+  const { data: warehouses } = useWarehouses();
+
+  useEffect(() => {
+    if (!warehouses?.data) return;
+
+    const mappedOptions = warehouses.data.map((item) => ({
+      value: item.whsCode,
+      label: (
+        <div className="flex items-center gap-2">
+          <WhsIcon className="w-4 h-4" />
+          <span>{item.whsCode}</span>
+        </div>
+      ),
+    }));
+
+    setWhsOptions((prev) => [...prev, ...mappedOptions]);
+  }, [warehouses]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
@@ -198,20 +232,38 @@ const Navbar: React.FC<NavbarProps> = ({
       <div className="flex justify-between items-center px-5 py-2">
         {/* Select 🚩 */}
         <div className="w-[180px] hover:cursor-pointer rounded-full">
-          <Select
-            defaultValue="Warehouse"
-            style={{ width: "100%" }}
-            value={selectedMonth}
-            onChange={(value) => setSelectedMonth(value)}
-            placeholder="Select a warehouse"
-            className="custom-select"
-            classNames={{
-              popup: {
-                root: "!w-[220px]",
-              },
-            }}
-            options={monthOptions}
-          />
+          {activeTab === "employees" && (
+            <Select
+              defaultValue="Warehouse"
+              style={{ width: "100%" }}
+              value={selectedMonth}
+              onChange={(value) => setSelectedMonth(value)}
+              placeholder="Select a warehouse"
+              className="custom-select"
+              classNames={{
+                popup: {
+                  root: "!w-[220px]",
+                },
+              }}
+              options={monthOptions}
+            />
+          )}
+          {activeTab === "informations" && (
+            <Select
+              defaultValue="Warehouse"
+              style={{ width: "100%" }}
+              value={selectedWhs}
+              onChange={(value) => setSelectedWhs(value)}
+              placeholder="Select a warehouse"
+              className="custom-select"
+              classNames={{
+                popup: {
+                  root: "!w-[220px]",
+                },
+              }}
+              options={whsOptions}
+            />
+          )}
         </div>
         {/* Navigation 🚩 */}
         <div className="w-[370px] flex justify-center gap-1 bg-[#F3F4F6] dark:bg-[#1A2331] py-1 rounded-3xl">

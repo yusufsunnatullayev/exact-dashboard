@@ -12,5 +12,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     (state: RootState) => state.auth.isAuthenticated
   );
 
-  return true ? element : <Navigate to="/login" replace />;
+  return isAuthenticated ? element : <Navigate to="/login" replace />;
 };

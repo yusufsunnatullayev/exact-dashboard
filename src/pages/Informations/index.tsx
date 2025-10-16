@@ -13,18 +13,22 @@ import { useAnnouncments } from "../../services/announcments/announcments.querie
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
 
-const Informations: React.FC = () => {
+interface Props {
+  selectedWhs: string;
+}
+
+const Informations: React.FC<Props> = ({ selectedWhs }) => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
-  const { data: announcmentsData, isLoading } = useAnnouncments();
+  const { data: announcmentsData, isLoading } = useAnnouncments(selectedWhs);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
   const filtered = announcmentsData?.data.filter((item) => {
     // const showUntil = addSecondsToTime(item.announcementTime, item.showTime);
-    const showUntil = addSecondsToTime("14:55", 100000000000);
+    const showUntil = addSecondsToTime("14:58", 100000);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("14:55", showUntil, getCurrentTime())
+      isBetween("14:58", showUntil, getCurrentTime())
     ) {
       return item;
     }
