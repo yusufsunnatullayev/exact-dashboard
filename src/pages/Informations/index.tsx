@@ -24,11 +24,14 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
   const filtered = announcmentsData?.data.filter((item) => {
-    // const showUntil = addSecondsToTime(item.announcementTime, item.showTime);
-    const showUntil = addSecondsToTime("14:58", 100000);
+    const showUntil = addSecondsToTime(
+      item.announcementTime,
+      item.showTime || 100000
+    );
+    // const showUntil = addSecondsToTime("14:58", 100000);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("14:58", showUntil, getCurrentTime())
+      isBetween("item.announcementTime", showUntil, getCurrentTime())
     ) {
       return item;
     }
