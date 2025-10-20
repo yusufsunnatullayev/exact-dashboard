@@ -50,6 +50,7 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
         <table className="w-full text-left">
           <thead>
             <tr className="text-gray-600 dark:text-gray-100 px-5">
+              <th className="py-5">Kod</th>
               <th className="py-5">Resurs</th>
               <th className="py-5 text-center">Qancha ishlab chiqarildi</th>
               <th className="py-5 text-right">Daromad</th>
@@ -61,6 +62,7 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
                 key={index}
                 className="border-t border-gray-200 dark:border-gray-600  dark:text-gray-100"
               >
+                <td className="py-5 ">{resource.itemCode}</td>
                 <td className="py-5 ">{resource.description}</td>
                 <td className="py-5  text-center">
                   {formatNumber(resource.work_orders_completed)}
