@@ -19,17 +19,46 @@ const Employees: React.FC<Props> = ({
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
+  const [scrollDurations, setScrollDurations] = useState<number[]>([]);
 
   const { data: employeesData, isLoading } = useEmployees(
     selectedMonth,
     selectedWhsDepartment
   );
 
-  // Handle progress animation and reset
+  const goToSlide = (index: number) => {
+    setCurrentProgress(0);
+    setCurrentIndex(index);
+  };
+
+  const goToPrevious = () => {
+    if (!employeesData?.data?.length) return;
+    setCurrentProgress(0);
+    setCurrentIndex((prev) =>
+      prev === 0 ? employeesData.data.length - 1 : prev - 1
+    );
+  };
+
+  const goToNext = () => {
+    if (!employeesData?.data?.length) return;
+    setCurrentProgress(0);
+    setCurrentIndex((prev) =>
+      prev === employeesData.data.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  // Progress animation
   useEffect(() => {
-    if (!stopTimer) return;
+    if (!stopTimer || !employeesData?.data?.length) return;
 
     setCurrentProgress(0);
+
+    const duration =
+      scrollDurations[currentIndex] && scrollDurations[currentIndex] > 0
+        ? scrollDurations[currentIndex]
+        : 15000; // fallback default (15s)
+
+    const stepTime = duration / 100;
 
     const interval = setInterval(() => {
       setCurrentProgress((prev) => {
@@ -39,36 +68,33 @@ const Employees: React.FC<Props> = ({
         }
         return prev + 1;
       });
-    }, 150);
+    }, stepTime);
 
     return () => clearInterval(interval);
-  }, [currentIndex, stopTimer]);
+  }, [currentIndex, stopTimer, scrollDurations]);
 
+  // Automatically slide when scroll reaches bottom
   useEffect(() => {
-    if (!stopTimer) return;
-    const interval = setInterval(() => {
-      goToSlide((currentIndex + 1) % employeesData?.data?.length);
-    }, 15500);
-    return () => clearInterval(interval);
-  }, [currentIndex, stopTimer, employeesData?.data?.length]);
+    if (!stopTimer || !employeesData?.data?.length) return;
 
-  const goToPrevious = () => {
-    setCurrentProgress(0);
+    const duration =
+      scrollDurations[currentIndex] && scrollDurations[currentIndex] > 0
+        ? scrollDurations[currentIndex]
+        : 15000; // fallback duration
 
-    setCurrentIndex((prev) =>
-      prev === 0 ? employeesData?.data?.length - 1 : prev - 1
-    );
-  };
+    const timer = setTimeout(() => {
+      goToSlide((currentIndex + 1) % employeesData.data.length);
+    }, duration + 1000); // +1s buffer
 
-  const goToNext = () => {
-    setCurrentProgress(0);
-    setCurrentIndex((prev) =>
-      prev === employeesData?.data?.length - 1 ? 0 : prev + 1
-    );
-  };
+    return () => clearTimeout(timer);
+  }, [currentIndex, stopTimer, employeesData?.data?.length, scrollDurations]);
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
+  const handleScrollDuration = (index: number, duration: number) => {
+    setScrollDurations((prev) => {
+      const updated = [...prev];
+      updated[index] = duration;
+      return updated;
+    });
   };
 
   if (isLoading) return <Loader />;
@@ -79,7 +105,7 @@ const Employees: React.FC<Props> = ({
 
   return (
     <div className="max-w-6xl mx-auto p-4">
-      {/* Carousel Container */}
+      {/* Carousel */}
       <div className="relative">
         <div className="overflow-hidden">
           <div
@@ -88,21 +114,29 @@ const Employees: React.FC<Props> = ({
           >
             {employeesData?.data.map((employee, index) => (
               <div key={index} className="w-full h-[75vh] flex-shrink-0 p-4">
-                <EmployeeSummaryCard {...employee} />
+                <EmployeeSummaryCard
+                  {...employee}
+                  isActive={index === currentIndex}
+                  stopTimer={stopTimer}
+                  onScrollDurationCalculated={(ms) =>
+                    handleScrollDuration(index, ms)
+                  }
+                />
               </div>
             ))}
           </div>
         </div>
 
+        {/* Navigation buttons */}
         <button
           onClick={goToPrevious}
-          className="absolute left-[-45px] top-1/2 cursor-pointer transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute left-[-45px] top-1/2 -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
           <ChevronLeft size={24} className="text-gray-600 dark:text-gray-300" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-[-45px] cursor-pointer top-1/2 transform -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
+          className="absolute right-[-45px] top-1/2 -translate-y-1/2 bg-white dark:bg-transparent dark:hover:bg-gray-800 p-2 rounded-full shadow-md hover:bg-gray-100"
         >
           <ChevronRight
             size={24}
@@ -111,7 +145,8 @@ const Employees: React.FC<Props> = ({
         </button>
       </div>
 
-      <div className="mt-5 max-w-4xl mx-auto flex flex-col items-center justify-center  ">
+      {/* Progress bar and indicators */}
+      <div className="mt-5 max-w-4xl mx-auto flex flex-col items-center justify-center">
         <Progress
           percent={currentProgress}
           status={currentProgress >= 100 ? "success" : "active"}
@@ -123,9 +158,9 @@ const Employees: React.FC<Props> = ({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full cursor-pointer ${
+              className={`w-3 h-3 rounded-full ${
                 currentIndex === index ? "bg-green-500 w-10" : "bg-gray-300"
-              }`}
+              } transition-all`}
             />
           ))}
         </div>

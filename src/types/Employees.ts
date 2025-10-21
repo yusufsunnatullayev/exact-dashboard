@@ -11,4 +11,7 @@ export interface EmployeeSummaryProps {
   detailedInformation: any[];
   targetQuantity?: number;
   proggresStart?: number;
+  isActive: boolean;
+  stopTimer: boolean;
+  setIsAtBottom: (isAtBottom: boolean) => void;
 }
