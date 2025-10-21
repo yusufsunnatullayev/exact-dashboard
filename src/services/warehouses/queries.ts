@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getWarehouses } from "./warehouses.service";
+import { getWarehouses } from "./service";
 
 const WAREHOUSES_KEY = ["warehouses"];
 

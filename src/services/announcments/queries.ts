@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAnnouncements } from "./announcments.service";
+import { getAnnouncements } from "./service";
 
 export function useAnnouncments(code?: string) {
   return useQuery({

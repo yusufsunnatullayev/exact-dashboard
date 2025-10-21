@@ -10,6 +10,8 @@ import Places from "../../pages/Places";
 const Layout: React.FC<LayoutProps> = () => {
   const activeTab = useSelector((state: any) => state.main.activeTab);
   const [selectedMonth, setSelectedMonth] = useState("Barcha oylar");
+  const [selectedWhsDepartment, setSelectedWhsDepartment] =
+    useState("Barcha omborlar");
   const [selectedWhs, setSelectedWhs] = useState("Barcha omborlar");
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem("darkMode") || "false")
@@ -27,7 +29,12 @@ const Layout: React.FC<LayoutProps> = () => {
   const renderActiveTab = () => {
     switch (activeTab) {
       case "employees":
-        return <Employees selectedMonth={selectedMonth} />;
+        return (
+          <Employees
+            selectedMonth={selectedMonth}
+            selectedWhsDepartment={selectedWhsDepartment}
+          />
+        );
       case "informations":
         return <Informations selectedWhs={selectedWhs} />;
       case "places":
@@ -59,6 +66,8 @@ const Layout: React.FC<LayoutProps> = () => {
           setSelectedMonth={setSelectedMonth}
           selectedWhs={selectedWhs}
           setSelectedWhs={setSelectedWhs}
+          selectedWhsDepartment={selectedWhsDepartment}
+          setSelectedWhsDepartment={setSelectedWhsDepartment}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />

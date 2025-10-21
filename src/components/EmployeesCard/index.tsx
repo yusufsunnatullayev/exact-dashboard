@@ -17,11 +17,14 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
     0
   );
   const totalCost = detailedInformation?.reduce((sum, resource) => {
-    if (typeof resource.revenue !== "number") {
-      return resource.revenue;
-    }
-    const cost = parseInt(resource.revenue.replace(/[^0-9]/g, ""));
-    return sum + cost;
+    // if (typeof resource.revenue !== "number") {
+    //   return resource.revenue;
+    // }
+    // const cost = parseInt(resource.revenue.replace(/[^0-9]/g, ""));
+    // return sum + cost;
+    return (
+      sum + Number(resource.work_orders_completed) * Number(resource.tsena)
+    );
   }, 0);
 
   return (
@@ -39,6 +42,20 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
             </h1>
           </div>
         </div>
+        <div className="flex-1 flex items-start justify-end gap-8 pr-14">
+          <div className="flex flex-col items-center gap-1.5 text-white">
+            <h1 className="text-xs font-medium">Jami ishlab chiqarilgan</h1>
+            <span className="text-sm font-semibold">
+              {formatNumber(totalQuantity)}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5 text-white">
+            <h1 className="text-xs font-medium">Jami daromad</h1>
+            <span className="text-sm font-semibold">
+              {formatNumber(totalCost)}
+            </span>
+          </div>
+        </div>
         <div className="flex flex-col items-end gap-2">
           <h1 className="text-gray-100 font-semibold ">
             {translateMonthToUzbek(oy_nomi)}
@@ -53,6 +70,7 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
               <th className="py-5">Kod</th>
               <th className="py-5">Resurs</th>
               <th className="py-5 text-center">Qancha ishlab chiqarildi</th>
+              <th className="py-5 text-center">Narxi</th>
               <th className="py-5 text-right">Daromad</th>
             </tr>
           </thead>
@@ -67,16 +85,16 @@ const EmployeeSummaryCard: React.FC<EmployeeSummaryProps> = ({
                 <td className="py-5  text-center">
                   {formatNumber(resource.work_orders_completed)}
                 </td>
-                <td className="py-5  text-right">{resource.revenue}</td>
+                <td className="py-5  text-center">
+                  {formatNumber(resource.tsena)}
+                </td>
+                <td className="py-5  text-right">
+                  {formatNumber(
+                    resource.work_orders_completed * resource.tsena
+                  )}
+                </td>
               </tr>
             ))}
-            <tr className="border-t border-gray-200 dark:border-gray-600 font-semibold  dark:text-gray-100">
-              <td className="py-5">Jami</td>
-              <td className="py-5 text-center">
-                {formatNumber(totalQuantity)}
-              </td>
-              <td className="py-5 text-right">{totalCost}</td>
-            </tr>
           </tbody>
         </table>
       </div>

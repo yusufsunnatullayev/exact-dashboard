@@ -9,7 +9,7 @@ import {
   getCurrentTime,
   isBetween,
 } from "../../helpers/time-handlers";
-import { useAnnouncments } from "../../services/announcments/announcments.queries";
+import { useAnnouncments } from "../../services/announcments/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
 

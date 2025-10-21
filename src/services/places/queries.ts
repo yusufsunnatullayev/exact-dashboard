@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPlaces } from "./places.service";
+import { getPlaces } from "./service";
 
 const PLACES_KEY = ["places"];
 

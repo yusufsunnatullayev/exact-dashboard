@@ -3,20 +3,27 @@ import { Progress } from "antd";
 import EmployeeSummaryCard from "../../components/EmployeesCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useSelector } from "react-redux";
-import { useEmployees } from "../../services/employees/employees.queries";
+import { useEmployees } from "../../services/employees/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
 
 interface Props {
   selectedMonth: string;
+  selectedWhsDepartment: string;
 }
 
-const Employees: React.FC<Props> = ({ selectedMonth }) => {
+const Employees: React.FC<Props> = ({
+  selectedMonth,
+  selectedWhsDepartment,
+}) => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
 
-  const { data: employeesData, isLoading } = useEmployees(selectedMonth);
+  const { data: employeesData, isLoading } = useEmployees(
+    selectedMonth,
+    selectedWhsDepartment
+  );
 
   // Handle progress animation and reset
   useEffect(() => {

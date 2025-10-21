@@ -19,7 +19,8 @@ import {
   setStopTimer as setStopTimerRedux,
 } from "../../store/slices/mainSlices";
 import Time from "../Time/index";
-import { useWarehouses } from "../../services/warehouses/warehouses.queries";
+import { useWarehouses } from "../../services/warehouses/queries";
+import { useWarehouseDepartments } from "../../services/warehouse-departments/queries";
 
 interface NavbarProps {
   darkMode: boolean;
@@ -28,6 +29,8 @@ interface NavbarProps {
   setSelectedMonth: React.Dispatch<React.SetStateAction<string>>;
   selectedWhs: string;
   setSelectedWhs: React.Dispatch<React.SetStateAction<string>>;
+  selectedWhsDepartment: string;
+  setSelectedWhsDepartment: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const monthOptions = [
@@ -178,6 +181,8 @@ const Navbar: React.FC<NavbarProps> = ({
   setSelectedMonth,
   selectedWhs,
   setSelectedWhs,
+  selectedWhsDepartment,
+  setSelectedWhsDepartment,
 }) => {
   const exitRef: any = useRef(null);
   const { activeTab: activeTabRedux, stopTimer: stopTimerRedux } = useSelector(
@@ -198,8 +203,20 @@ const Navbar: React.FC<NavbarProps> = ({
       ),
     },
   ]);
+  const [whsOptionsDepartments, setWhsOptionsDepartments] = useState([
+    {
+      value: "Barcha omborlar",
+      label: (
+        <div className="flex items-center gap-2">
+          <WhsIcon className="w-4 h-4" />
+          <span>Barcha omborlar</span>
+        </div>
+      ),
+    },
+  ]);
 
   const { data: warehouses } = useWarehouses();
+  const { data: whsDepartments } = useWarehouseDepartments();
 
   useEffect(() => {
     if (!warehouses?.data) return;
@@ -217,6 +234,22 @@ const Navbar: React.FC<NavbarProps> = ({
     setWhsOptions((prev) => [...prev, ...mappedOptions]);
   }, [warehouses]);
 
+  useEffect(() => {
+    if (!whsDepartments?.data) return;
+
+    const mappedOptions = whsDepartments.data.map((item) => ({
+      value: item.whsCode,
+      label: (
+        <div className="flex items-center gap-2">
+          <WhsIcon className="w-4 h-4" />
+          <span>{item.whsCode}</span>
+        </div>
+      ),
+    }));
+
+    setWhsOptionsDepartments((prev) => [...prev, ...mappedOptions]);
+  }, [whsDepartments]);
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     dispatch(setActiveTabRedux(tab));
@@ -233,20 +266,36 @@ const Navbar: React.FC<NavbarProps> = ({
         {/* Select 🚩 */}
         <div className="w-[180px] hover:cursor-pointer rounded-full">
           {activeTab === "employees" && (
-            <Select
-              defaultValue="Warehouse"
-              style={{ width: "100%" }}
-              value={selectedMonth}
-              onChange={(value) => setSelectedMonth(value)}
-              placeholder="Select a warehouse"
-              className="custom-select"
-              classNames={{
-                popup: {
-                  root: "!w-[220px]",
-                },
-              }}
-              options={monthOptions}
-            />
+            <div className="flex items-center gap-2">
+              <Select
+                defaultValue="Warehouse"
+                style={{ width: "100%" }}
+                value={selectedMonth}
+                onChange={(value) => setSelectedMonth(value)}
+                placeholder="Select a month"
+                className="custom-select"
+                classNames={{
+                  popup: {
+                    root: "!w-[220px]",
+                  },
+                }}
+                options={monthOptions}
+              />
+              <Select
+                defaultValue="Warehouse"
+                style={{ width: "100%" }}
+                value={selectedWhsDepartment}
+                onChange={(value) => setSelectedWhsDepartment(value)}
+                placeholder="Select a warehouse"
+                className="custom-select"
+                classNames={{
+                  popup: {
+                    root: "!w-[220px]",
+                  },
+                }}
+                options={whsOptionsDepartments}
+              />
+            </div>
           )}
           {activeTab === "informations" && (
             <Select

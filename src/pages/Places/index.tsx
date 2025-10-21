@@ -1,7 +1,7 @@
 import { useState } from "react";
 import EmployeePlaceCard from "../../components/EmployeePlaceCard";
 import EmployeePlaceDetailModal from "../../components/EmployeePlaceDetailModal";
-import { usePlaces } from "../../services/places/places.queries";
+import { usePlaces } from "../../services/places/queries";
 import Loader from "../../components/Loader";
 
 const Places = () => {
