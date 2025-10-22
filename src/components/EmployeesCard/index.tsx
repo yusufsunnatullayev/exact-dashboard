@@ -117,6 +117,17 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
     0
   );
 
+  const totalQuantityDefect = detailedDefectInformation?.reduce(
+    (sum, resource) => sum + Number(resource.work_orders_completed),
+    0
+  );
+
+  const totalCostDefect = detailedDefectInformation?.reduce(
+    (sum, resource) =>
+      sum + Number(resource.work_orders_completed) * Number(resource.tsena),
+    0
+  );
+
   return (
     <div className="max-w-6xl mx-auto bg-white dark:bg-dark-main rounded-3xl shadow-lg overflow-hidden">
       {/* Header */}
@@ -142,9 +153,15 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
             </span>
           </div>
           <div className="flex flex-col items-center gap-1.5 text-white">
+            <h1 className="text-xs font-medium">Jami Braklar soni</h1>
+            <span className="text-sm font-semibold">
+              {formatNumber(totalQuantityDefect)}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1.5 text-white">
             <h1 className="text-xs font-medium">Jami daromad</h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalCost)}
+              {formatNumber(totalCost - totalCostDefect)}
             </span>
           </div>
         </div>
@@ -176,7 +193,7 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
             {allItems?.map((resource, index) => (
               <tr
                 key={index}
-                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformations.length && "bg-red-100"}`}
+                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformations.length && "text-red-500"}`}
               >
                 <td className="py-5">{resource.itemCode}</td>
                 <td className="py-5">{resource.description}</td>
@@ -188,6 +205,7 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
                   {formatNumber(resource.tsena)}
                 </td>
                 <td className="py-5 text-right">
+                  {/* {index >= detailedInformations.length && "-"} */}
                   {formatNumber(
                     resource.work_orders_completed * resource.tsena
                   )}
