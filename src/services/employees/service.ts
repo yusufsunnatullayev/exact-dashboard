@@ -13,8 +13,8 @@ export async function getEmployees(month?: string, whsCode?: string) {
 
   const query = params.toString();
   const url = query
-    ? `report/get-employee-department?${query}`
-    : "report/get-employee-department";
+    ? `report/get-employee-department-defect?${query}`
+    : "report/get-employee-department-defect";
 
   const res = await http.get(url);
   return res.data;

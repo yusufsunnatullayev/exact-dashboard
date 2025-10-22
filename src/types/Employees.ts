@@ -8,7 +8,8 @@ export interface EmployeeSummaryProps {
   firstName: string;
   lastName: string;
   oy_nomi: string;
-  detailedInformation: any[];
+  detailedInformations: any[];
+  detailedDefectInformation: any[];
   targetQuantity?: number;
   proggresStart?: number;
   isActive: boolean;
