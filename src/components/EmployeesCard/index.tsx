@@ -193,7 +193,7 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
             {allItems?.map((resource, index) => (
               <tr
                 key={index}
-                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformations.length && "text-red-500"}`}
+                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformations.length && "text-red-500 dark:text-red-500"}`}
               >
                 <td className="py-5">{resource.itemCode}</td>
                 <td className="py-5">{resource.description}</td>
