@@ -147,21 +147,23 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
 
         <div className="flex-1 flex items-start justify-end gap-8 pr-14">
           <div className="flex flex-col items-center gap-1.5 text-white">
-            <h1 className="text-xs font-medium">Jami ishlab chiqarilgan</h1>
+            <h1 className="text-xs font-medium">
+              Jami ishlab chiqarilgan daromad
+            </h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalQuantity)}
+              {formatNumber(totalCost)} so&apos;m
             </span>
           </div>
           <div className="flex flex-col items-center gap-1.5 text-white">
-            <h1 className="text-xs font-medium">Jami Braklar soni</h1>
+            <h1 className="text-xs font-medium">Jami Braklar daromad</h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalQuantityDefect)}
+              {formatNumber(totalCostDefect)} so&apos;m
             </span>
           </div>
           <div className="flex flex-col items-center gap-1.5 text-white">
-            <h1 className="text-xs font-medium">Jami daromad</h1>
+            <h1 className="text-xs font-medium">Sof daromad</h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalCost - totalCostDefect)}
+              {formatNumber(totalCost - totalCostDefect)} so&apos;m
             </span>
           </div>
         </div>
