@@ -31,7 +31,7 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
     // const showUntil = addSecondsToTime("14:58", 100000);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("item.announcementTime", showUntil, getCurrentTime())
+      isBetween(item.announcementTime, showUntil, getCurrentTime())
     ) {
       return item;
     }
