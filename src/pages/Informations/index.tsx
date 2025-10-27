@@ -12,6 +12,7 @@ import {
 import { useAnnouncments } from "../../services/announcments/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
+import { useAnnouncmentsColors } from "../../services/announcment_colors/queries";
 
 interface Props {
   selectedWhs: string;
@@ -20,18 +21,19 @@ interface Props {
 const Informations: React.FC<Props> = ({ selectedWhs }) => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
   const { data: announcmentsData, isLoading } = useAnnouncments(selectedWhs);
+  const { data: colors } = useAnnouncmentsColors();
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
   const filtered = announcmentsData?.data.filter((item) => {
-    const showUntil = addSecondsToTime(
-      item.announcementTime,
-      item.showTime || 100000
-    );
-    // const showUntil = addSecondsToTime("14:58", 100000);
+    // const showUntil = addSecondsToTime(
+    //   item.announcementTime,
+    //   item.showTime || 100000
+    // );
+    const showUntil = addSecondsToTime("16:32", 100000);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween(item.announcementTime, showUntil, getCurrentTime())
+      isBetween("16:32", showUntil, getCurrentTime())
     ) {
       return item;
     }
@@ -99,7 +101,7 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
             {filtered.map((item, index) => (
               <div key={index} className="w-full flex-shrink-0 p-4">
                 {/* @ts-ignore */}
-                <InformationsCard data={item} />
+                <InformationsCard data={item} colors={colors?.data || []} />
               </div>
             ))}
           </div>

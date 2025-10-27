@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { CircleCheckBig, Info, TriangleAlert } from "lucide-react";
-import { InformationData } from "../../types/api/Informations";
+import {
+  AnnouncementColors,
+  InformationData,
+} from "../../types/api/Informations";
 
 // Single Employee Summary Card Component
-const InformationsCard: React.FC = ({ data }: { data: InformationData }) => {
+const InformationsCard: React.FC = ({
+  data,
+  colors,
+}: {
+  data: InformationData;
+  colors: AnnouncementColors[];
+}) => {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "true"
   );
@@ -80,20 +89,36 @@ const InformationsCard: React.FC = ({ data }: { data: InformationData }) => {
     }
   };
 
+  const colorObj = useMemo(() => {
+    return colors.find(
+      (item) => item?.u_AnnouncementType === data.announcementType
+    );
+  }, []);
+
+  console.log(colorObj);
+
   return (
     <div className="relative  max-w-6xl h-[70vh] mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
       <div
         className={`px-7 py-8 w-full h-full`}
         style={{
-          backgroundColor: darkMode
-            ? `#${data.typeColor}99`
-            : `#${data.typeColor}50`,
+          backgroundColor: data?.bgColor
+            ? darkMode
+              ? `#${data?.darkBgColor}`
+              : `#${data?.bgColor}`
+            : darkMode
+              ? colorObj?.u_BgColorDark
+              : colorObj?.u_BgColor,
         }}
       >
         <div className="flex items-center justify-between gap-5 w-full">
           <div
             className={`px-3 py-1 rounded-2xl z-10`}
-            style={{ backgroundColor: `#${data.typeColor}` }}
+            style={{
+              backgroundColor: data?.typeColor
+                ? `#${data?.typeColor}`
+                : `${colorObj?.u_TypeColor}`,
+            }}
           >
             <span className={`text-white text-sm`}>
               {data.announcementTime}
@@ -101,7 +126,11 @@ const InformationsCard: React.FC = ({ data }: { data: InformationData }) => {
           </div>
           <div
             className={`px-3 py-1 rounded-2xl z-10 text-white flex gap-1 items-center`}
-            style={{ backgroundColor: `#${data.typeColor}` }}
+            style={{
+              backgroundColor: data?.typeColor
+                ? `#${data?.typeColor}`
+                : `${colorObj?.u_TypeColor}`,
+            }}
           >
             {switchTypeIcon(data.announcementTime)}
             <span className="text-white text-sm">{data.priority}</span>
@@ -111,7 +140,11 @@ const InformationsCard: React.FC = ({ data }: { data: InformationData }) => {
         <div className="flex items-center gap-5 mt-10">
           <h1
             className={`text-[60px] leading-[67px] z-10 font-bold`}
-            style={{ color: `#${data.titleColor}` }}
+            style={{
+              color: data?.titleColor
+                ? `#${data?.titleColor}`
+                : `${colorObj?.u_TitleColor}`,
+            }}
           >
             {data.title}
           </h1>
