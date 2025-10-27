@@ -121,7 +121,7 @@ const InformationsCard: React.FC = ({
             }}
           >
             <span className={`text-white text-sm`}>
-              {data.announcementTime}
+              {data.announcementType}
             </span>
           </div>
           <div
