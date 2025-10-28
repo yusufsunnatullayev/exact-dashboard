@@ -2,10 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import EmployeeSummaryCard from "../../components/EmployeesCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEmployees } from "../../services/employees/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
+import { useAnnouncments } from "../../services/announcments/queries";
+import {
+  addSecondsToTime,
+  getCurrentTime,
+  isBetween,
+} from "../../helpers/time-handlers";
+import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
 
 interface Props {
   selectedMonth: string;
@@ -20,11 +27,33 @@ const Employees: React.FC<Props> = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [scrollDurations, setScrollDurations] = useState<number[]>([]);
+  const dispatch = useDispatch();
 
   const { data: employeesData, isLoading } = useEmployees(
     selectedMonth,
     selectedWhsDepartment
   );
+  const { data: announcmentsData } = useAnnouncments();
+
+  const filtered = announcmentsData?.data.filter((item) => {
+    // const showUntil = addSecondsToTime(
+    //   item.announcementTime,
+    //   item.showTime || 100000
+    // );
+    const showUntil = addSecondsToTime("09:29", 100);
+    if (
+      item.visableInDashboard === "Y" &&
+      isBetween("09:29", showUntil, getCurrentTime())
+    ) {
+      return item;
+    }
+  });
+
+  useEffect(() => {
+    if (filtered?.length > 0) {
+      dispatch(setActiveTabRedux("informations"));
+    }
+  }, [filtered, dispatch]);
 
   const goToSlide = (index: number) => {
     setCurrentProgress(0);

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Progress } from "antd";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InformationsCard from "../../components/InformationsCard";
 import {
   addSecondsToTime,
@@ -13,6 +13,7 @@ import { useAnnouncments } from "../../services/announcments/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
 import { useAnnouncmentsColors } from "../../services/announcment_colors/queries";
+import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
 
 interface Props {
   selectedWhs: string;
@@ -22,7 +23,7 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
   const { data: announcmentsData, isLoading } = useAnnouncments(selectedWhs);
   const { data: colors } = useAnnouncmentsColors();
-
+  const dispatch = useDispatch();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentProgress, setCurrentProgress] = useState(0);
   const filtered = announcmentsData?.data.filter((item) => {
@@ -30,14 +31,20 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
     //   item.announcementTime,
     //   item.showTime || 100000
     // );
-    const showUntil = addSecondsToTime("16:32", 100000);
+    const showUntil = addSecondsToTime("09:29", 100);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("16:32", showUntil, getCurrentTime())
+      isBetween("09:29", showUntil, getCurrentTime())
     ) {
       return item;
     }
   });
+
+  useEffect(() => {
+    if (filtered && filtered.length === 0) {
+      dispatch(setActiveTabRedux("employees"));
+    }
+  }, [filtered, dispatch]);
 
   // Handle progress animation and reset
   useEffect(() => {
@@ -84,10 +91,6 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
   };
 
   if (isLoading) return <Loader />;
-
-  if (filtered?.length === 0) {
-    return <DataNotFound />;
-  }
 
   return (
     <div className="max-w-6xl mx-auto p-4">

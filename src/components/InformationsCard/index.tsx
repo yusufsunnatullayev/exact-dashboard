@@ -30,50 +30,6 @@ const InformationsCard: React.FC = ({
     return () => observer.disconnect();
   }, []);
 
-  const switchTypeBg = (type: string) => {
-    switch (type) {
-      case "Xavfsizlik ogohlantirishni":
-        return "bg-red-100 dark:bg-[#4C343C]";
-      case "Eslatma":
-        return "bg-yellow-100 dark:bg-[#4C3A1D]";
-      case "Muvaffaqiyat":
-        return "bg-green-100 dark:bg-[#14423D]";
-      case "Ma'lumot":
-        return "bg-blue-100 dark:bg-[#22375C]";
-      default:
-        return "bg-blue-100";
-    }
-  };
-
-  const switchTypeBgText = (type: string) => {
-    switch (type) {
-      case "Xavfsizlik ogohlantirishni":
-        return "bg-main-red2 dark:bg-main-red-dark";
-      case "Eslatma":
-        return "bg-main-yellow2 dark:bg-main-yellow-dark";
-      case "Muvaffaqiyat":
-        return "bg-main-green2 dark:bg-main-green-dark";
-      case "Ma'lumot":
-        return "bg-main-blue2 dark:bg-main-blue-dark";
-      default:
-        return "bg-main-blue2 dark:bg-main-blue-dark";
-    }
-  };
-  const switchTypeTitle = (type: string) => {
-    switch (type) {
-      case "Xavfsizlik ogohlantirishni":
-        return "text-main-red1";
-      case "Eslatma":
-        return "text-main-yellow1";
-      case "Muvaffaqiyat":
-        return "text-main-green1";
-      case "Ma'lumot":
-        return "text-main-blue1";
-      default:
-        return "text-main-blue1";
-    }
-  };
-
   const switchTypeIcon = (type: string) => {
     switch (type) {
       case "Xavfsizlik ogohlantirishni":
@@ -93,9 +49,7 @@ const InformationsCard: React.FC = ({
     return colors.find(
       (item) => item?.u_AnnouncementType === data.announcementType
     );
-  }, []);
-
-  console.log(colorObj);
+  }, [colors]);
 
   return (
     <div className="relative  max-w-6xl h-[70vh] mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
@@ -151,10 +105,7 @@ const InformationsCard: React.FC = ({
         </div>
 
         <div className="mt-5 z-10">
-          <span
-            className="text-gray-500 dark:text-gray-200 text-lg"
-            // style={{ color: `#${data.messageColor}` }}
-          >
+          <span className="text-gray-500 dark:text-gray-200 text-lg">
             {data.message}
           </span>
         </div>
@@ -162,32 +113,7 @@ const InformationsCard: React.FC = ({
         <div className="flex items-center gap-1 mt-5 z-10">
           <span className="font-semibold dark:text-gray-100">Author:</span>
           <span className="dark:text-gray-100">{data.author}</span>
-          {/* <span className="text-gray-500"> (Texnik xizmat)</span> */}
         </div>
-
-        {/* <div className="flex items-center gap-1 mt-5">
-          <span className="font-semibold">Tags:</span>
-        </div>
-        <div className="flex items-center gap-3 mt-5">
-          {data.tags.map((tag, index) => (
-            <div key={index} className="bg-sky-100 p-2 rounded-2xl">
-              <span className="text-gray-700 text-sm">{tag}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className=" border-b-1 border-b-gray-300 mt-5"></div>
-
-        <div className="flex items-center gap-5 mt-5">
-          <span className="flex items-center gap-1 text-gray-500">
-            <Calendar size={16} />
-            <span className=" ml-2">{data.date}</span>
-          </span>
-          <span className="flex items-center gap-1 text-gray-500">
-            <Timer size={16} />
-            <span className=" ml-2">{data.time}</span>
-          </span>
-        </div> */}
       </div>
 
       <div

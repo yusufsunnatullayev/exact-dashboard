@@ -219,6 +219,10 @@ const Navbar: React.FC<NavbarProps> = ({
   const { data: whsDepartments } = useWarehouseDepartments();
 
   useEffect(() => {
+    setActiveTab(activeTabRedux);
+  }, [activeTabRedux]);
+
+  useEffect(() => {
     if (!warehouses?.data) return;
 
     const mappedOptions = warehouses.data.map((item) => ({

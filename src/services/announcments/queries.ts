@@ -5,5 +5,6 @@ export function useAnnouncments(code?: string) {
   return useQuery({
     queryKey: ["announcments", code],
     queryFn: () => getAnnouncements(code),
+    refetchInterval: 60000,
   });
 }
