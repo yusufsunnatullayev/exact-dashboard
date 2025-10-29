@@ -36,14 +36,14 @@ const Employees: React.FC<Props> = ({
   const { data: announcmentsData } = useAnnouncments();
 
   const filtered = announcmentsData?.data.filter((item) => {
-    // const showUntil = addSecondsToTime(
-    //   item.announcementTime,
-    //   item.showTime || 100000
-    // );
-    const showUntil = addSecondsToTime("09:29", 100);
+    const showUntil = addSecondsToTime(
+      item.announcementTime,
+      item.showTime || 100000
+    );
+    // const showUntil = addSecondsToTime("09:29", 100);
     if (
       item.visableInDashboard === "Y" &&
-      isBetween("09:29", showUntil, getCurrentTime())
+      isBetween(item.announcementTime, showUntil, getCurrentTime())
     ) {
       return item;
     }
