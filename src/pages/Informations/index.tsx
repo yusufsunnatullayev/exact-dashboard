@@ -40,11 +40,11 @@ const Informations: React.FC<Props> = ({ selectedWhs }) => {
     }
   });
 
-  useEffect(() => {
-    if (filtered && filtered.length === 0) {
-      dispatch(setActiveTabRedux("employees"));
-    }
-  }, [filtered, dispatch]);
+  // useEffect(() => {
+  //   if (filtered && filtered.length === 0) {
+  //     dispatch(setActiveTabRedux("employees"));
+  //   }
+  // }, [filtered, dispatch]);
 
   // Handle progress animation and reset
   useEffect(() => {

@@ -1,25 +1,35 @@
 import { Button, Modal } from "antd";
+import { useMemo } from "react";
 
-const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
-  function hexToRgba(hex, alpha = 1) {
-    if (!hex) return "";
-    hex = hex.replace("#", "");
+const EmployeePlaceDetailModal = ({
+  item,
+  isModalOpen,
+  setIsModalOpen,
+  colors,
+}) => {
+  // function hexToRgba(hex, alpha = 1) {
+  //   if (!hex) return "";
+  //   hex = hex.replace("#", "");
 
-    if (hex.length === 3) {
-      hex = hex
-        .split("")
-        .map((x) => x + x)
-        .join("");
-    }
+  //   if (hex.length === 3) {
+  //     hex = hex
+  //       .split("")
+  //       .map((x) => x + x)
+  //       .join("");
+  //   }
 
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+  //   const r = parseInt(hex.substring(0, 2), 16);
+  //   const g = parseInt(hex.substring(2, 4), 16);
+  //   const b = parseInt(hex.substring(4, 6), 16);
 
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
+  //   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  // }
 
-  const colorFromDb = item?.name || "#2d78e0";
+  // const colorFromDb = item?.name || "#2d78e0";
+
+  const color = useMemo(() => {
+    return colors.find((color) => color.joyLine === item?.line);
+  }, [colors, item]);
 
   return (
     <Modal
@@ -45,18 +55,18 @@ const EmployeePlaceDetailModal = ({ item, isModalOpen, setIsModalOpen }) => {
           <div
             className="flex w-fit items-center gap-2 py-1 px-3 rounded-2xl"
             style={{
-              backgroundColor: hexToRgba(colorFromDb, 0.3),
+              backgroundColor: color?.bgColor,
             }}
           >
             <div
               className="w-2 h-2 rounded-full"
               style={{
-                backgroundColor: hexToRgba(colorFromDb),
+                backgroundColor: color?.textColor,
               }}
             ></div>
             <h1
               className="text-base font-medium"
-              style={{ color: hexToRgba(colorFromDb) }}
+              style={{ color: color?.textColor }}
             >
               {item?.resourseName}
             </h1>

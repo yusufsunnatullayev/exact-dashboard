@@ -3,12 +3,15 @@ import EmployeePlaceCard from "../../components/EmployeePlaceCard";
 import EmployeePlaceDetailModal from "../../components/EmployeePlaceDetailModal";
 import { usePlaces } from "../../services/places/queries";
 import Loader from "../../components/Loader";
+import { useSeatsColors } from "../../services/seats-colors/queries";
 
 const Places = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: places, isLoading } = usePlaces();
+
+  const { data: seats_colors } = useSeatsColors();
 
   if (isLoading) return <Loader />;
 
@@ -34,6 +37,9 @@ const Places = () => {
             <EmployeePlaceCard
               key={item.code}
               item={item}
+              color={seats_colors.data.find(
+                (color) => color.joyLine === item.line
+              )}
               setIsModalOpen={setIsModalOpen}
               setSelectedEmployee={setSelectedEmployee}
             />
@@ -42,6 +48,7 @@ const Places = () => {
       </div>
       <EmployeePlaceDetailModal
         item={selectedEmployee}
+        colors={seats_colors?.data}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />

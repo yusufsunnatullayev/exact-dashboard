@@ -1,26 +1,31 @@
 import { motion } from "framer-motion";
 
-const EmployeePlaceCard = ({ item, setSelectedEmployee, setIsModalOpen }) => {
-  function hexToRgba(hex, alpha = 1) {
-    if (!hex) return "";
+const EmployeePlaceCard = ({
+  item,
+  setSelectedEmployee,
+  setIsModalOpen,
+  color,
+}) => {
+  // function hexToRgba(hex, alpha = 1) {
+  //   if (!hex) return "";
 
-    hex = hex.replace("#", "");
+  //   hex = hex.replace("#", "");
 
-    if (hex.length === 3) {
-      hex = hex
-        .split("")
-        .map((x) => x + x)
-        .join("");
-    }
+  //   if (hex.length === 3) {
+  //     hex = hex
+  //       .split("")
+  //       .map((x) => x + x)
+  //       .join("");
+  //   }
 
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
+  //   const r = parseInt(hex.substring(0, 2), 16);
+  //   const g = parseInt(hex.substring(2, 4), 16);
+  //   const b = parseInt(hex.substring(4, 6), 16);
 
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  }
+  //   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  // }
 
-  const colorFromDb = item?.name || "#2d78e0";
+  // const colorFromDb = item?.name || "#2d78e0";
 
   return (
     <motion.div
@@ -39,23 +44,26 @@ const EmployeePlaceCard = ({ item, setSelectedEmployee, setIsModalOpen }) => {
         }}
         className="relative h-[100px] flex flex-col items-center justify-center border-2 rounded-xl"
         style={{
-          backgroundColor: hexToRgba(colorFromDb, 0.25),
-          borderColor: hexToRgba(colorFromDb, 0.25),
+          backgroundColor: color.bgColor,
+          borderColor: color.textColor,
         }}
       >
-        <h1 className="text-sm font-semibold line-clamp-1 text-center dark:text-white">
+        <h1
+          className="text-sm font-semibold line-clamp-1 text-center"
+          style={{ color: color.textColor }}
+        >
           {item.employeeName}
         </h1>
-        <span className="text-xs text-gray-600 dark:text-gray-400">
+        <span className="text-xs" style={{ color: color.textColor }}>
           {item.machineName}
         </span>
         <div
           className="px-2 h-5 rounded-xl flex items-center justify-center mt-2"
-          style={{ backgroundColor: hexToRgba(colorFromDb, 0.25) }}
+          style={{ backgroundColor: color.textColor }}
         >
           <span
             className="text-xs font-semibold text-black"
-            style={{ color: hexToRgba(colorFromDb) }}
+            style={{ color: color.bgColor }}
           >
             {item.resourseCode}
           </span>

@@ -49,11 +49,11 @@ const Employees: React.FC<Props> = ({
     }
   });
 
-  useEffect(() => {
-    if (filtered?.length > 0) {
-      dispatch(setActiveTabRedux("informations"));
-    }
-  }, [filtered, dispatch]);
+  // useEffect(() => {
+  //   if (filtered?.length > 0) {
+  //     dispatch(setActiveTabRedux("informations"));
+  //   }
+  // }, [filtered, dispatch]);
 
   const goToSlide = (index: number) => {
     setCurrentProgress(0);
