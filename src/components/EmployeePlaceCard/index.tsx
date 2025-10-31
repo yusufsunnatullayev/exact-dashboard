@@ -34,7 +34,10 @@ const EmployeePlaceCard = ({
       transition={{ type: "spring", stiffness: 300, damping: 15 }}
     >
       {/* Blue border wrapper */}
-      <div className="absolute inset-0 border-3 border-transparent rounded-2xl group-hover:border-blue-600 transition-colors duration-300 pointer-events-none" />
+      <div
+        style={{ "--hover-border": color.textColor } as React.CSSProperties}
+        className="absolute inset-0 border-3 border-transparent rounded-2xl transition-colors duration-300 pointer-events-none group-hover:border-[var(--hover-border)]"
+      />
 
       {/* Actual Card */}
       <div
@@ -58,14 +61,14 @@ const EmployeePlaceCard = ({
           {item.machineName}
         </span>
         <div
-          className="px-2 h-5 rounded-xl flex items-center justify-center mt-2"
+          className="px-2 w-[80%] mx-auto rounded-xl flex items-center justify-center mt-2"
           style={{ backgroundColor: color.textColor }}
         >
           <span
-            className="text-xs font-semibold text-black"
+            className="text-[8px] text-center font-semibold text-black"
             style={{ color: color.bgColor }}
           >
-            {item.resourseCode}
+            {item.resourseName}
           </span>
         </div>
       </div>

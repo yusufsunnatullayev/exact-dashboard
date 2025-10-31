@@ -24,10 +24,11 @@ const Login = () => {
       console.log("Login payload", postData);
       const res = await http.post("/login/log-in", postData);
       console.log(res);
-      const { firstName, lastName, accessToken } = res.data.data;
+      const { firstName, lastName, accessToken, wareHouse } = res.data.data;
 
       const user = `${firstName} ${lastName}`;
 
+      localStorage.setItem("whsCode", wareHouse);
       dispatch(login({ token: accessToken, user: user }));
       message.success(
         `Muvaffaqiyatli Login qilindi  ${firstName} ${lastName} !`

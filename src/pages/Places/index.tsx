@@ -4,6 +4,7 @@ import EmployeePlaceDetailModal from "../../components/EmployeePlaceDetailModal"
 import { usePlaces } from "../../services/places/queries";
 import Loader from "../../components/Loader";
 import { useSeatsColors } from "../../services/seats-colors/queries";
+import DataNotFound from "../../components/DataNotFound";
 
 const Places = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -15,7 +16,9 @@ const Places = () => {
 
   if (isLoading) return <Loader />;
 
-  return (
+  return places.data.length === 0 ? (
+    <DataNotFound />
+  ) : (
     <div className="max-w-7xl mx-auto py-10 flex flex-col gap-10">
       {/* Head Content 🚩 */}
       <div className="flex flex-col gap-3">
@@ -32,12 +35,12 @@ const Places = () => {
         <h1 className="text-xl font-semibold dark:text-gray-100">
           Ombor xodimlari o'tirish joylari xaritasi
         </h1>
-        <div className="w-full grid grid-cols-8">
+        <div className="w-full grid grid-cols-7">
           {places?.data?.map((item) => (
             <EmployeePlaceCard
               key={item.code}
               item={item}
-              color={seats_colors.data.find(
+              color={seats_colors.data?.find(
                 (color) => color.joyLine === item.line
               )}
               setIsModalOpen={setIsModalOpen}

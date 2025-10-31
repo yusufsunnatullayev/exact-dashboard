@@ -5,5 +5,6 @@ export function useEmployees(month?: string, whsCode?: string) {
   return useQuery({
     queryKey: ["employees", month, whsCode],
     queryFn: () => getEmployees(month, whsCode),
+    refetchInterval: 20000,
   });
 }
