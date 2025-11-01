@@ -1,18 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EmployeePlaceCard from "../../components/EmployeePlaceCard";
 import EmployeePlaceDetailModal from "../../components/EmployeePlaceDetailModal";
 import { usePlaces } from "../../services/places/queries";
 import Loader from "../../components/Loader";
 import { useSeatsColors } from "../../services/seats-colors/queries";
 import DataNotFound from "../../components/DataNotFound";
+import { useSeatingTime } from "../../services/seating_time/queries";
+import { getCurrentTime, isBetween } from "../../helpers/time-handlers";
+import { useDispatch } from "react-redux";
+import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
 
 const Places = () => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const { data: places, isLoading } = usePlaces();
 
   const { data: seats_colors } = useSeatsColors();
+
+  const { data: seating_time } = useSeatingTime();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const time = seating_time?.data?.[0];
+      if (!time) return;
+
+      const shouldBeInPlaces = isBetween(
+        time.startTime || "13:38",
+        time.endTime || "13:39",
+        getCurrentTime()
+      );
+
+      if (!shouldBeInPlaces) {
+        dispatch(setActiveTabRedux("employees"));
+      }
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, [seating_time, dispatch]);
 
   if (isLoading) return <Loader />;
 
@@ -26,8 +52,8 @@ const Places = () => {
           Ombor xodimlari o'tirish joylari
         </h1>
         <p className="text-base font-medium text-gray-500 dark:text-gray-200">
-          Barcha 35 ta ombor xodimlarining o'tirish joylari va belgilangan
-          pozitsiyalari
+          Barcha {places?.data?.length} ta ombor xodimlarining o'tirish joylari
+          va belgilangan pozitsiyalari
         </p>
       </div>
       {/* Main Content 🚩 */}

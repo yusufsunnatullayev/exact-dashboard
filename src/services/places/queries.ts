@@ -7,6 +7,5 @@ export function usePlaces() {
   return useQuery({
     queryKey: PLACES_KEY,
     queryFn: getPlaces,
-    refetchInterval: 20000,
   });
 }

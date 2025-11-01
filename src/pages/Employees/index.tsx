@@ -13,6 +13,7 @@ import {
   isBetween,
 } from "../../helpers/time-handlers";
 import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
+import { useSeatingTime } from "../../services/seating_time/queries";
 
 interface Props {
   selectedMonth: string;
@@ -34,6 +35,7 @@ const Employees: React.FC<Props> = ({
     selectedWhsDepartment
   );
   const { data: announcmentsData } = useAnnouncments();
+  const { data: seating_time } = useSeatingTime();
 
   const filtered = announcmentsData?.data.filter((item) => {
     const showUntil = addSecondsToTime(
@@ -54,6 +56,25 @@ const Employees: React.FC<Props> = ({
       dispatch(setActiveTabRedux("informations"));
     }
   }, [filtered, dispatch]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const time = seating_time?.data?.[0];
+      if (!time) return;
+
+      const shouldGoToPlaces = isBetween(
+        time.startTime || "13:38",
+        time.endTime || "13:39",
+        getCurrentTime()
+      );
+
+      if (shouldGoToPlaces) {
+        dispatch(setActiveTabRedux("places"));
+      }
+    }, 20000);
+
+    return () => clearInterval(interval);
+  }, [seating_time, dispatch]);
 
   const goToSlide = (index: number) => {
     setCurrentProgress(0);
