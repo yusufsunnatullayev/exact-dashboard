@@ -13,14 +13,14 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
   firstName,
   lastName,
   oy_nomi,
-  detailedInformations,
-  detailedDefectInformation,
+  detailedInformation,
+  defectsItems,
   isActive,
   onScrollDurationCalculated,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const hasCalculatedDuration = useRef(false);
-  const allItems = [...detailedInformations, ...detailedDefectInformation];
+  const allItems = [...detailedInformation, ...defectsItems];
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -104,27 +104,31 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
       clearInterval(interval);
       clearTimeout(measureTimeout);
     };
-  }, [isActive, detailedInformations]);
+  }, [isActive, detailedInformation]);
 
-  const totalQuantity = detailedInformations?.reduce(
+  const totalQuantity = detailedInformation?.reduce(
     (sum, resource) => sum + Number(resource.work_orders_completed),
     0
   );
 
-  const totalCost = detailedInformations?.reduce(
+  const totalCost = detailedInformation?.reduce(
     (sum, resource) =>
-      sum + Number(resource.work_orders_completed) * Number(resource.tsena),
+      sum +
+      Number(resource.work_orders_completed ?? resource.quantity) *
+        Number(resource.tsena ?? resource.priceOrigin),
     0
   );
 
-  const totalQuantityDefect = detailedDefectInformation?.reduce(
+  const totalQuantityDefect = defectsItems?.reduce(
     (sum, resource) => sum + Number(resource.work_orders_completed),
     0
   );
 
-  const totalCostDefect = detailedDefectInformation?.reduce(
+  const totalCostDefect = defectsItems?.reduce(
     (sum, resource) =>
-      sum + Number(resource.work_orders_completed) * Number(resource.tsena),
+      sum +
+      Number(resource.work_orders_completed ?? resource.quantity) *
+        Number(resource.tsena ?? resource.priceOrigin),
     0
   );
 
@@ -195,21 +199,28 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
             {allItems?.map((resource, index) => (
               <tr
                 key={index}
-                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformations.length && "text-red-500 dark:text-red-500"}`}
+                className={`border-t border-gray-200 dark:border-gray-600 dark:text-gray-100 ${index >= detailedInformation.length && "text-red-500 dark:text-red-500"}`}
               >
-                <td className="py-5">{resource.itemCode}</td>
-                <td className="py-5">{resource.description}</td>
-                <td className="py-5 text-center">{resource.uom ?? "-"}</td>
-                <td className="py-5 text-center">
-                  {formatNumber(resource.work_orders_completed)}
+                <td className="py-5">{resource.itemCode ?? resource.sku}</td>
+                <td className="py-5">
+                  {resource.description ?? resource.itemName}
                 </td>
                 <td className="py-5 text-center">
-                  {formatNumber(resource.tsena)}
+                  {resource.uom ?? resource.uomCode ?? "-"}
+                </td>
+                <td className="py-5 text-center">
+                  {formatNumber(
+                    resource.work_orders_completed ?? resource.quantity
+                  )}
+                </td>
+                <td className="py-5 text-center">
+                  {formatNumber(resource.tsena ?? resource.priceOrigin)}
                 </td>
                 <td className="py-5 text-right">
                   {/* {index >= detailedInformations.length && "-"} */}
                   {formatNumber(
-                    resource.work_orders_completed * resource.tsena
+                    (resource.work_orders_completed ?? resource.quantity) *
+                      (resource.tsena ?? resource.priceOrigin)
                   )}
                 </td>
               </tr>

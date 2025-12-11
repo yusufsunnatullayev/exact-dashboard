@@ -28,6 +28,7 @@ const EmployeePlaceDetailModal = ({
   // const colorFromDb = item?.name || "#2d78e0";
 
   const color = useMemo(() => {
+    if (!colors) return;
     return colors.find((color) => color.joyLine === item?.line);
   }, [colors, item]);
 

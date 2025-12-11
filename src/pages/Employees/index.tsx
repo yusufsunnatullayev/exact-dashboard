@@ -153,6 +153,8 @@ const Employees: React.FC<Props> = ({
     return <DataNotFound />;
   }
 
+  console.log("Data:", employeesData);
+
   return (
     <div className="max-w-6xl mx-auto p-4">
       {/* Carousel */}

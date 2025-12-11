@@ -66,7 +66,7 @@ const Places = () => {
             <EmployeePlaceCard
               key={item.code}
               item={item}
-              color={seats_colors.data?.find(
+              color={seats_colors?.data?.find(
                 (color) => color.joyLine === item.line
               )}
               setIsModalOpen={setIsModalOpen}

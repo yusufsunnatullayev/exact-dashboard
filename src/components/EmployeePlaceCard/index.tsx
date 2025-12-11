@@ -35,7 +35,7 @@ const EmployeePlaceCard = ({
     >
       {/* Blue border wrapper */}
       <div
-        style={{ "--hover-border": color.textColor } as React.CSSProperties}
+        style={{ "--hover-border": color?.textColor } as React.CSSProperties}
         className="absolute inset-0 border-3 border-transparent rounded-2xl transition-colors duration-300 pointer-events-none group-hover:border-[var(--hover-border)]"
       />
 
@@ -47,26 +47,26 @@ const EmployeePlaceCard = ({
         }}
         className="relative h-[100px] flex flex-col items-center justify-center border-2 rounded-xl"
         style={{
-          backgroundColor: color.bgColor,
-          borderColor: color.textColor,
+          backgroundColor: color?.bgColor,
+          borderColor: color?.textColor,
         }}
       >
         <h1
           className="text-sm font-semibold line-clamp-1 text-center"
-          style={{ color: color.textColor }}
+          style={{ color: color?.textColor }}
         >
           {item.employeeName}
         </h1>
-        <span className="text-xs" style={{ color: color.textColor }}>
+        <span className="text-xs" style={{ color: color?.textColor }}>
           {item.machineName}
         </span>
         <div
           className="px-2 w-[80%] mx-auto rounded-xl flex items-center justify-center mt-2"
-          style={{ backgroundColor: color.textColor }}
+          style={{ backgroundColor: color?.textColor }}
         >
           <span
             className="text-[8px] text-center font-semibold text-black"
-            style={{ color: color.bgColor }}
+            style={{ color: color?.bgColor }}
           >
             {item.resourseName}
           </span>
