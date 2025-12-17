@@ -16,6 +16,8 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
   detailedInformation,
   defectsItems,
   isActive,
+  totalRevenueByEmployee,
+  totalValueUZS,
   onScrollDurationCalculated,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -106,32 +108,6 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
     };
   }, [isActive, detailedInformation]);
 
-  const totalQuantity = detailedInformation?.reduce(
-    (sum, resource) => sum + Number(resource.work_orders_completed),
-    0
-  );
-
-  const totalCost = detailedInformation?.reduce(
-    (sum, resource) =>
-      sum +
-      Number(resource.work_orders_completed ?? resource.quantity) *
-        Number(resource.tsena ?? resource.priceOrigin),
-    0
-  );
-
-  const totalQuantityDefect = defectsItems?.reduce(
-    (sum, resource) => sum + Number(resource.work_orders_completed),
-    0
-  );
-
-  const totalCostDefect = defectsItems?.reduce(
-    (sum, resource) =>
-      sum +
-      Number(resource.work_orders_completed ?? resource.quantity) *
-        Number(resource.tsena ?? resource.priceOrigin),
-    0
-  );
-
   return (
     <div className="max-w-6xl mx-auto bg-white dark:bg-dark-main rounded-3xl shadow-lg overflow-hidden">
       {/* Header */}
@@ -155,19 +131,22 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
               Jami ishlab chiqarilgan daromad
             </h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalCost)} so&apos;m
+              {formatNumber(totalRevenueByEmployee ?? 0)} so&apos;m
             </span>
           </div>
           <div className="flex flex-col items-center gap-1.5 text-white">
             <h1 className="text-xs font-medium">Jami Braklar daromad</h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalCostDefect)} so&apos;m
+              {formatNumber(totalValueUZS ?? 0)} so&apos;m
             </span>
           </div>
           <div className="flex flex-col items-center gap-1.5 text-white">
             <h1 className="text-xs font-medium">Sof daromad</h1>
             <span className="text-sm font-semibold">
-              {formatNumber(totalCost - totalCostDefect)} so&apos;m
+              {formatNumber(
+                (totalRevenueByEmployee ?? 0) - (totalValueUZS ?? 0)
+              )}{" "}
+              so&apos;m
             </span>
           </div>
         </div>

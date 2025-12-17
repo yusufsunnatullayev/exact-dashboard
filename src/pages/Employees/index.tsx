@@ -3,7 +3,11 @@ import { Progress } from "antd";
 import EmployeeSummaryCard from "../../components/EmployeesCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEmployees } from "../../services/employees/queries";
+import {
+  useEmployees,
+  useTotalDefect,
+  useTotalRevenue,
+} from "../../services/employees/queries";
 import Loader from "../../components/Loader";
 import DataNotFound from "../../components/DataNotFound";
 import { useAnnouncments } from "../../services/announcments/queries";
@@ -34,6 +38,9 @@ const Employees: React.FC<Props> = ({
     selectedMonth,
     selectedWhsDepartment
   );
+  const { data: total_revenue } = useTotalRevenue();
+  const { data: total_defect } = useTotalDefect();
+
   const { data: announcmentsData } = useAnnouncments();
   const { data: seating_time } = useSeatingTime();
 
@@ -153,7 +160,31 @@ const Employees: React.FC<Props> = ({
     return <DataNotFound />;
   }
 
-  console.log("Data:", employeesData);
+  const enrichedEmployees = employeesData?.data.map((employee) => {
+    // Find the corresponding revenue data by empID
+    const revenueData = total_revenue?.data.find(
+      (revenue) => revenue.empID === employee.id
+    );
+
+    // Find the corresponding defect data by empID
+    const defectData = total_defect?.data.find(
+      (defect) => defect.empID === employee.id
+    );
+
+    return {
+      ...employee,
+      totalRevenueByEmployee: revenueData
+        ? revenueData.totalRevenueByEmployee
+        : 0,
+      totalValueUZS: defectData ? defectData.totalValueUZS : 0,
+    };
+  });
+
+  console.log(enrichedEmployees);
+
+  console.log("Rev:", total_revenue);
+  console.log("Def:", total_defect);
+  console.log("Data:", enrichedEmployees);
 
   return (
     <div className="max-w-6xl mx-auto p-4">

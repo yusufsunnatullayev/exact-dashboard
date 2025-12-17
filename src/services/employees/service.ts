@@ -19,3 +19,13 @@ export async function getEmployees(month?: string, whsCode?: string) {
   const res = await http.get(url);
   return res.data;
 }
+
+export async function getTotalRevenue() {
+  const res = await http.get("report/get-total-revenue");
+  return res.data;
+}
+
+export async function getTotalDefect() {
+  const res = await http.get("report/get-defect-total");
+  return res.data;
+}
