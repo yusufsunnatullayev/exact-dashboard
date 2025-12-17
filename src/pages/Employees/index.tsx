@@ -180,10 +180,6 @@ const Employees: React.FC<Props> = ({
     };
   });
 
-  console.log(enrichedEmployees);
-
-  console.log("Rev:", total_revenue);
-  console.log("Def:", total_defect);
   console.log("Data:", enrichedEmployees);
 
   return (
@@ -195,7 +191,7 @@ const Employees: React.FC<Props> = ({
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            {employeesData?.data.map((employee, index) => (
+            {enrichedEmployees?.map((employee, index) => (
               <div key={index} className="w-full h-[75vh] flex-shrink-0 p-4">
                 <EmployeeSummaryCard
                   {...employee}

@@ -11,14 +11,14 @@ export function useEmployees(month?: string, whsCode?: string) {
 
 export function useTotalRevenue() {
   return useQuery({
-    queryKey: ["employees"],
+    queryKey: ["employees_revenue"],
     queryFn: getTotalRevenue,
   });
 }
 
 export function useTotalDefect() {
   return useQuery({
-    queryKey: ["employees"],
+    queryKey: ["employees_defect"],
     queryFn: getTotalDefect,
   });
 }
