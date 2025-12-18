@@ -24,9 +24,6 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
   const hasCalculatedDuration = useRef(false);
   const allItems = [...detailedInformation, ...defectsItems];
 
-  console.log("Def:", totalValueUZS);
-  console.log("Rev:", totalRevenueByEmployee);
-
   useEffect(() => {
     const container = scrollRef.current;
     if (!container || !isActive) return;

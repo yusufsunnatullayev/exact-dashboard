@@ -9,16 +9,16 @@ export function useEmployees(month?: string, whsCode?: string) {
   });
 }
 
-export function useTotalRevenue() {
+export function useTotalRevenue(month?: string) {
   return useQuery({
-    queryKey: ["employees_revenue"],
-    queryFn: getTotalRevenue,
+    queryKey: ["employees_revenue", month],
+    queryFn: () => getTotalRevenue(month),
   });
 }
 
-export function useTotalDefect() {
+export function useTotalDefect(month?: string) {
   return useQuery({
-    queryKey: ["employees_defect"],
-    queryFn: getTotalDefect,
+    queryKey: ["employees_defect", month],
+    queryFn: () => getTotalDefect(month),
   });
 }

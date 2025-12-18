@@ -16,3 +16,18 @@ export function translateMonthToUzbek(month) {
 
   return months[month.toUpperCase()] || month;
 }
+
+export const monthsArr = [
+  "YANVAR",
+  "FEVRAL",
+  "MART",
+  "APREL",
+  "MAY",
+  "IYUN",
+  "IYUL",
+  "AVGUST",
+  "SENTABR",
+  "OKTABR",
+  "NOYABR",
+  "DEKABR",
+];

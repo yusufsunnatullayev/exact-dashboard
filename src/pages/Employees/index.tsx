@@ -18,6 +18,7 @@ import {
 } from "../../helpers/time-handlers";
 import { setActiveTab as setActiveTabRedux } from "../../store/slices/mainSlices";
 import { useSeatingTime } from "../../services/seating_time/queries";
+import { monthsArr } from "../../helpers/translateMonth";
 
 interface Props {
   selectedMonth: string;
@@ -34,12 +35,28 @@ const Employees: React.FC<Props> = ({
   const [scrollDurations, setScrollDurations] = useState<number[]>([]);
   const dispatch = useDispatch();
 
+  let date;
+
+  if (selectedMonth && selectedMonth !== "Barcha oylar") {
+    const year = new Date().getFullYear();
+
+    // Try to parse the selectedMonth as a number; if it's not numeric, fall back to the original string
+    const monthNumber = Number(selectedMonth);
+    const formattedMonth = Number.isNaN(monthNumber)
+      ? selectedMonth
+      : monthNumber < 10
+        ? `0${monthNumber}`
+        : String(monthNumber);
+
+    date = `${formattedMonth}.${year}`;
+  }
+
   const { data: employeesData, isLoading } = useEmployees(
     selectedMonth,
     selectedWhsDepartment
   );
-  const { data: total_revenue } = useTotalRevenue();
-  const { data: total_defect } = useTotalDefect();
+  const { data: total_revenue } = useTotalRevenue(selectedMonth);
+  const { data: total_defect } = useTotalDefect(date);
 
   const { data: announcmentsData } = useAnnouncments();
   const { data: seating_time } = useSeatingTime();
@@ -58,11 +75,11 @@ const Employees: React.FC<Props> = ({
     }
   });
 
-  useEffect(() => {
-    if (filtered?.length > 0) {
-      dispatch(setActiveTabRedux("informations"));
-    }
-  }, [filtered, dispatch]);
+  // useEffect(() => {
+  //   if (filtered?.length > 0) {
+  //     dispatch(setActiveTabRedux("informations"));
+  //   }
+  // }, [filtered, dispatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {

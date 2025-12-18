@@ -20,12 +20,34 @@ export async function getEmployees(month?: string, whsCode?: string) {
   return res.data;
 }
 
-export async function getTotalRevenue() {
-  const res = await http.get("report/get-total-revenue");
+export async function getTotalRevenue(month?: string) {
+  const params = new URLSearchParams();
+
+  if (month && month !== "Barcha oylar") {
+    params.append("month", month);
+  }
+
+  const query = params.toString();
+  const url = query
+    ? `report/get-total-revenue?${query}`
+    : "report/get-total-revenue";
+
+  const res = await http.get(url);
   return res.data;
 }
 
-export async function getTotalDefect() {
-  const res = await http.get("report/get-defect-total");
+export async function getTotalDefect(month?: string) {
+  const params = new URLSearchParams();
+
+  if (month && month !== "Barcha oylar") {
+    params.append("month", month);
+  }
+
+  const query = params.toString();
+  const url = query
+    ? `report/get-defect-total?${query}`
+    : "report/get-defect-total";
+
+  const res = await http.get(url);
   return res.data;
 }
