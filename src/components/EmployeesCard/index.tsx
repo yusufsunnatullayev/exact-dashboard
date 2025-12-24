@@ -168,6 +168,7 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
             <tr className="text-gray-600 dark:text-gray-100">
               <th className="py-5">Kod</th>
               <th className="py-5">Resurs</th>
+              <th className="py-5">Sana</th>
               <th className="py-5">O'lchov birligi</th>
               <th className="py-5 text-center">Qancha ishlab chiqarildi</th>
               <th className="py-5 text-center">Narxi</th>
@@ -184,6 +185,7 @@ const EmployeeSummaryCard: React.FC<ExtendedProps> = ({
                 <td className="py-5">
                   {resource.description ?? resource.itemName}
                 </td>
+                <td className="py-5">{resource.docDate}</td>
                 <td className="py-5 text-center">
                   {resource.uom ?? resource.uomCode ?? "-"}
                 </td>

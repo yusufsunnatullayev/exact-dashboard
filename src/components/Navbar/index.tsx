@@ -31,6 +31,8 @@ interface NavbarProps {
   setSelectedWhs: React.Dispatch<React.SetStateAction<string>>;
   selectedWhsDepartment: string;
   setSelectedWhsDepartment: React.Dispatch<React.SetStateAction<string>>;
+  selectedYear: number;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const monthOptions = [
@@ -183,6 +185,8 @@ const Navbar: React.FC<NavbarProps> = ({
   setSelectedWhs,
   selectedWhsDepartment,
   setSelectedWhsDepartment,
+  selectedYear,
+  setSelectedYear,
 }) => {
   const exitRef: any = useRef(null);
   const { activeTab: activeTabRedux, stopTimer: stopTimerRedux } = useSelector(
@@ -192,6 +196,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const [activeTab, setActiveTab] = useState<string>(activeTabRedux);
   const [stopTimer, setStopTimer] = useState<boolean>(stopTimerRedux);
+  const [yearOptions, setYearOptions] = useState([]);
   const [whsOptions, setWhsOptions] = useState([
     {
       value: "Barcha omborlar",
@@ -217,6 +222,25 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const { data: warehouses } = useWarehouses();
   const { data: whsDepartments } = useWarehouseDepartments();
+
+  useEffect(() => {
+    const date = new Date();
+
+    for (let year = 2020; year <= date.getFullYear(); year++) {
+      setYearOptions((prev) => [
+        ...prev,
+        {
+          value: year,
+          label: (
+            <div className="flex items-center gap-2">
+              <Calendar1 className="w-4 h-4" />
+              <span>{year}</span>
+            </div>
+          ),
+        },
+      ]);
+    }
+  }, []);
 
   useEffect(() => {
     setActiveTab(activeTabRedux);
@@ -298,6 +322,20 @@ const Navbar: React.FC<NavbarProps> = ({
                   },
                 }}
                 options={whsOptionsDepartments}
+              />
+              <Select
+                defaultValue={new Date().getFullYear()}
+                style={{ width: "100%" }}
+                value={selectedYear}
+                onChange={(value) => setSelectedYear(Number(value))}
+                placeholder="Select a year"
+                className="custom-select"
+                classNames={{
+                  popup: {
+                    root: "!w-[220px]",
+                  },
+                }}
+                options={yearOptions}
               />
             </div>
           )}

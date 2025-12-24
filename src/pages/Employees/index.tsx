@@ -23,11 +23,13 @@ import { monthsArr } from "../../helpers/translateMonth";
 interface Props {
   selectedMonth: string;
   selectedWhsDepartment: string;
+  selectedYear: number;
 }
 
 const Employees: React.FC<Props> = ({
   selectedMonth,
   selectedWhsDepartment,
+  selectedYear,
 }) => {
   const stopTimer = useSelector((state: any) => state.main.stopTimer);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,9 +55,10 @@ const Employees: React.FC<Props> = ({
 
   const { data: employeesData, isLoading } = useEmployees(
     selectedMonth,
-    selectedWhsDepartment
+    selectedWhsDepartment,
+    selectedYear
   );
-  const { data: total_revenue } = useTotalRevenue(selectedMonth);
+  const { data: total_revenue } = useTotalRevenue(selectedMonth, selectedYear);
   const { data: total_defect } = useTotalDefect(date);
 
   const { data: announcmentsData } = useAnnouncments();
@@ -75,11 +78,11 @@ const Employees: React.FC<Props> = ({
     }
   });
 
-  // useEffect(() => {
-  //   if (filtered?.length > 0) {
-  //     dispatch(setActiveTabRedux("informations"));
-  //   }
-  // }, [filtered, dispatch]);
+  useEffect(() => {
+    if (filtered?.length > 0) {
+      dispatch(setActiveTabRedux("informations"));
+    }
+  }, [filtered, dispatch]);
 
   useEffect(() => {
     const interval = setInterval(() => {

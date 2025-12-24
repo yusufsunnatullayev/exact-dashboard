@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { getEmployees, getTotalDefect, getTotalRevenue } from "./service";
 
-export function useEmployees(month?: string, whsCode?: string) {
+export function useEmployees(month?: string, whsCode?: string, year?: number) {
   return useQuery({
-    queryKey: ["employees", month, whsCode],
-    queryFn: () => getEmployees(month, whsCode),
+    queryKey: ["employees", month, whsCode, year],
+    queryFn: () => getEmployees(month, whsCode, year),
     refetchInterval: 20000,
   });
 }
 
-export function useTotalRevenue(month?: string) {
+export function useTotalRevenue(month?: string, year?: number) {
   return useQuery({
-    queryKey: ["employees_revenue", month],
-    queryFn: () => getTotalRevenue(month),
+    queryKey: ["employees_revenue", month, year],
+    queryFn: () => getTotalRevenue(month, year),
   });
 }
 

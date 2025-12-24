@@ -13,6 +13,7 @@ const Layout: React.FC<LayoutProps> = () => {
   const [selectedWhsDepartment, setSelectedWhsDepartment] =
     useState("Barcha omborlar");
   const [selectedWhs, setSelectedWhs] = useState("Barcha omborlar");
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [darkMode, setDarkMode] = useState(
     JSON.parse(localStorage.getItem("darkMode") || "false")
   );
@@ -33,6 +34,7 @@ const Layout: React.FC<LayoutProps> = () => {
           <Employees
             selectedMonth={selectedMonth}
             selectedWhsDepartment={selectedWhsDepartment}
+            selectedYear={selectedYear}
           />
         );
       case "informations":
@@ -68,6 +70,8 @@ const Layout: React.FC<LayoutProps> = () => {
           setSelectedWhs={setSelectedWhs}
           selectedWhsDepartment={selectedWhsDepartment}
           setSelectedWhsDepartment={setSelectedWhsDepartment}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />
